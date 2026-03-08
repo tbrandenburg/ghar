@@ -13,22 +13,27 @@
 SOURCE_REPO ?= tbrandenburg/ghar
 SOURCE_BRANCH ?= main
 
-# URLs for fetching files
-DAILY_WORKFLOW_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.github/workflows/ghar-daily-routine.yml
-ISSUE_WORKFLOW_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.github/workflows/ghar-issue-opened.yml
-OPENCODE_RUN_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.github/workflows/core-opencode-run.yml
-STALE_CHECK_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.opencode/commands/ghar-stale-check.md
-ISSUE_INVESTIGATE_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.opencode/commands/ghar-issue-investigate.md
-OPENCODE_CONFIG_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.opencode/opencode.jsonc
+# Base URL for fetching files
+BASE_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)
 
-.PHONY: help install install-workflow install-issue-workflow install-opencode-run install-stale-check install-issue-investigate install-opencode-config setup-dirs clean
+# Files to install (local_path:description)
+GHAR_FILES = \
+	.github/workflows/core-opencode-run.yml:OpenCode_runner \
+	.github/workflows/ghar-daily-routine.yml:Daily_routine_workflow \
+	.github/workflows/ghar-issue-opened.yml:Auto_issue_investigation_workflow \
+	.opencode/commands/ghar-stale-check.md:Stale_check_command \
+	.opencode/commands/ghar-issue-investigate.md:Issue_investigation_command \
+	.opencode/opencode.jsonc:OpenCode_configuration
+
+.PHONY: help install install-dry setup-dirs clean validate info
 
 help:
 	@echo "GitHub Auto-Routine (GHAR) - Daily Routine Installer"
 	@echo ""
 	@echo "Usage:"
-	@echo "  make -f Makefile.ghar install    Install complete daily routine system"
-	@echo "  make -f Makefile.ghar clean      Remove installed files"
+	@echo "  make -f Makefile.ghar install      Install complete daily routine system"
+	@echo "  make -f Makefile.ghar install-dry  Show what would be installed (dry-run)"
+	@echo "  make -f Makefile.ghar clean        Remove installed files"
 	@echo ""
 	@echo "One-liner installation:"
 	@echo "  curl -fsSL https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/Makefile.ghar | make -f - install"
@@ -42,80 +47,29 @@ setup-dirs:
 	@mkdir -p .github/workflows
 	@mkdir -p .opencode/commands
 
-install-workflow: setup-dirs
-	@echo "📥 Checking for ghar-daily-routine.yml..."
-	@if [ ! -f .github/workflows/ghar-daily-routine.yml ]; then \
-		echo "📥 Downloading daily-routine.yml..."; \
-		curl -fsSL "$(DAILY_WORKFLOW_URL)" -o .github/workflows/ghar-daily-routine.yml; \
-		echo "✅ Downloaded daily-routine.yml"; \
+# Function to install a single file
+# Usage: $(call install-file,local_path,description)
+define install-file
+	@echo "📥 Checking for $(notdir $1)..."
+	@if [ ! -f "$1" ]; then \
+		echo "📥 Downloading $(subst _, ,$2)..."; \
+		curl -fsSL "$(BASE_URL)/$1" -o "$1"; \
+		echo "✅ Downloaded $(notdir $1)"; \
 	else \
-		echo "⚠️  ghar-daily-routine.yml already exists - skipping download"; \
+		echo "⚠️  $(notdir $1) already exists - skipping download"; \
 	fi
+endef
 
-install-issue-workflow: setup-dirs
-	@echo "📥 Checking for ghar-issue-opened.yml..."
-	@if [ ! -f .github/workflows/ghar-issue-opened.yml ]; then \
-		echo "📥 Downloading ghar-issue-opened.yml..."; \
-		curl -fsSL "$(ISSUE_WORKFLOW_URL)" -o .github/workflows/ghar-issue-opened.yml; \
-		echo "✅ Downloaded ghar-issue-opened.yml"; \
-	else \
-		echo "⚠️  ghar-issue-opened.yml already exists - skipping download"; \
-	fi
-
-install-opencode-run: setup-dirs
-	@echo "📥 Checking for core-opencode-run.yml..."
-	@if [ ! -f .github/workflows/core-opencode-run.yml ]; then \
-		echo "📥 Downloading core-opencode-run.yml (required dependency)..."; \
-		curl -fsSL "$(OPENCODE_RUN_URL)" -o .github/workflows/core-opencode-run.yml; \
-		echo "✅ Downloaded core-opencode-run.yml"; \
-	else \
-		echo "⚠️  core-opencode-run.yml already exists - skipping download"; \
-	fi
-
-install-stale-check: setup-dirs
-	@echo "📥 Checking for ghar-stale-check.md..."
-	@if [ ! -f .opencode/commands/ghar-stale-check.md ]; then \
-		echo "📥 Downloading ghar-stale-check.md..."; \
-		curl -fsSL "$(STALE_CHECK_URL)" -o .opencode/commands/ghar-stale-check.md; \
-		echo "✅ Downloaded ghar-stale-check.md"; \
-	else \
-		echo "⚠️  ghar-stale-check.md already exists - skipping download"; \
-	fi
-
-install-issue-investigate: setup-dirs
-	@echo "📥 Checking for ghar-issue-investigate.md..."
-	@if [ ! -f .opencode/commands/ghar-issue-investigate.md ]; then \
-		echo "📥 Downloading ghar-issue-investigate.md..."; \
-		curl -fsSL "$(ISSUE_INVESTIGATE_URL)" -o .opencode/commands/ghar-issue-investigate.md; \
-		echo "✅ Downloaded ghar-issue-investigate.md"; \
-	else \
-		echo "⚠️  ghar-issue-investigate.md already exists - skipping download"; \
-	fi
-
-install-opencode-config: setup-dirs
-	@echo "📥 Checking for OpenCode configuration..."
-	@if [ ! -f .opencode/opencode.json ] && [ ! -f .opencode/opencode.jsonc ]; then \
-		echo "📥 Downloading opencode.jsonc (OpenCode configuration)..."; \
-		curl -fsSL "$(OPENCODE_CONFIG_URL)" -o .opencode/opencode.jsonc; \
-		echo "✅ Downloaded opencode.jsonc"; \
-	else \
-		echo "⚠️  OpenCode configuration already exists - skipping download"; \
-	fi
-
-install: install-opencode-run install-workflow install-issue-workflow install-stale-check install-issue-investigate install-opencode-config
+install: setup-dirs
+	@$(foreach file_desc,$(GHAR_FILES),$(call install-file,$(word 1,$(subst :, ,$(file_desc))),$(word 2,$(subst :, ,$(file_desc)))))
 	@echo ""
 	@echo "🎉 GHAR installation complete!"
 	@echo ""
 	@echo "What was installed:"
-	@echo "  📄 .github/workflows/ghar-daily-routine.yml        - Daily routine workflow (if missing)"
-	@echo "  📄 .github/workflows/ghar-issue-opened.yml         - Auto issue investigation workflow (if missing)"
-	@echo "  📄 .github/workflows/core-opencode-run.yml          - OpenCode runner (if missing)"
-	@echo "  📄 .opencode/commands/ghar-stale-check.md      - Stale check command (if missing)"
-	@echo "  📄 .opencode/commands/ghar-issue-investigate.md - Issue investigation command (if missing)"
-	@echo "  📄 .opencode/opencode.jsonc                    - OpenCode configuration (if missing)"
+	@$(foreach file_desc,$(GHAR_FILES),echo "  📄 $(word 1,$(subst :, ,$(file_desc))) - $(subst _, ,$(word 2,$(subst :, ,$(file_desc)))) (if missing)";)
 	@echo ""
 	@echo "Configuration:"
-	@echo "  ⏰ Daily routine: Stale PR/issue check"
+	@echo "  ⏰ Daily routine: Stale PR/issue check + uncommented issue investigation"
 	@echo "  🔍 Auto investigation: New issue opened"
 	@echo "  📋 Manual commands available"
 	@echo ""
@@ -127,14 +81,27 @@ install: install-opencode-run install-workflow install-issue-workflow install-st
 	@echo ""
 	@echo "To customize the schedule, edit .github/workflows/ghar-daily-routine.yml"
 
+install-dry: setup-dirs
+	@echo "🔍 DRY RUN: Checking what would be installed..."
+	@echo ""
+	@$(foreach file_desc,$(GHAR_FILES), \
+		echo "📥 Checking $(notdir $(word 1,$(subst :, ,$(file_desc))))..."; \
+		if [ ! -f "$(word 1,$(subst :, ,$(file_desc)))" ]; then \
+			echo "🔽 Would download $(subst _, ,$(word 2,$(subst :, ,$(file_desc)))) from $(BASE_URL)/$(word 1,$(subst :, ,$(file_desc)))"; \
+		else \
+			echo "⚠️  $(notdir $(word 1,$(subst :, ,$(file_desc)))) already exists - would skip download"; \
+		fi; \
+	)
+	@echo ""
+	@echo "📋 Summary of what would be installed:"
+	@$(foreach file_desc,$(GHAR_FILES),echo "  📄 $(word 1,$(subst :, ,$(file_desc))) - $(subst _, ,$(word 2,$(subst :, ,$(file_desc))))";)
+	@echo ""
+	@echo "🚀 To actually install, run: make -f Makefile.ghar install"
+
 clean:
 	@echo "🗑️  Removing GHAR files..."
-	@rm -f .github/workflows/ghar-daily-routine.yml
-	@rm -f .github/workflows/ghar-issue-opened.yml
-	@rm -f .opencode/commands/ghar-stale-check.md
-	@rm -f .opencode/commands/ghar-issue-investigate.md
+	@$(foreach file_desc,$(GHAR_FILES),if [ -f "$(word 1,$(subst :, ,$(file_desc)))" ]; then rm -f "$(word 1,$(subst :, ,$(file_desc)))" && echo "Removed $(word 1,$(subst :, ,$(file_desc)))"; fi;)
 	@echo "✅ Cleaned up GHAR files"
-	@echo "   Note: core-opencode-run.yml and opencode.jsonc were preserved as they may be used by other workflows"
 
 # Validation targets
 validate:
@@ -145,5 +112,6 @@ info:
 	@echo "Configuration Information:"
 	@echo "  SOURCE_REPO: $(SOURCE_REPO)"
 	@echo "  SOURCE_BRANCH: $(SOURCE_BRANCH)"
-	@echo "  DAILY_WORKFLOW_URL: $(DAILY_WORKFLOW_URL)"
-	@echo "  STALE_CHECK_URL: $(STALE_CHECK_URL)"
+	@echo "  BASE_URL: $(BASE_URL)"
+	@echo "  Files to install:"
+	@$(foreach file_desc,$(GHAR_FILES),echo "    $(word 1,$(subst :, ,$(file_desc))) - $(subst _, ,$(word 2,$(subst :, ,$(file_desc))))";)
