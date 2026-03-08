@@ -33,8 +33,15 @@ Analyze this repository's dependencies for security vulnerabilities using packag
    - Look for package files (package.json, requirements.txt, etc.)
    - Search for known vulnerabilities in major dependencies
    
-5. **Create Issue if Needed**: If vulnerabilities are found, create a GitHub issue with:
-   - Title: "🚨 Security Vulnerabilities Found - [Date]"
+5. **Check for Duplicate Issues**: Before creating a new issue, check recent GitHub issues to avoid duplicates:
+   - List the latest 10-20 open issues using `gh issue list --limit 20`
+   - Scan issue titles and descriptions for the same package names or CVE IDs found in your scan
+   - If an issue already addresses the same vulnerability, add a comment with updated findings instead of creating a duplicate
+   - If no matching issue exists, proceed to create a new one
+   
+6. **Create Issue if Needed**: If vulnerabilities are found and no duplicate exists, create a GitHub issue with:
+   - Title: "🚨 Security Vulnerability: [Package Name] has [Severity] vulnerability ([CVE-ID])" 
+   - For multiple vulnerabilities: "🚨 Security: [X] critical/high vulnerabilities found in dependencies"
    - Clear list of vulnerable packages and versions
    - Severity levels and CVE IDs
    - Recommended actions (update commands, patches, etc.)
@@ -43,7 +50,6 @@ Analyze this repository's dependencies for security vulnerabilities using packag
 ## Important Notes
 
 - Only create an issue if CRITICAL or HIGH severity vulnerabilities are found
-- Check if a similar security issue already exists before creating a new one
 - Include specific update commands (e.g., `npm update package-name`)
 - If no vulnerabilities found, report "No critical security vulnerabilities detected by [tool-name]"
 - If security tools fail, explain what was attempted and fallback results
