@@ -49,21 +49,28 @@ setup-dirs:
 
 
 install: setup-dirs
-	@$(foreach file_desc,$(GHAR_FILES), \
-		echo "📥 Checking for $(notdir $(word 1,$(subst :, ,$(file_desc))))..."; \
-		if [ ! -f "$(word 1,$(subst :, ,$(file_desc)))" ]; then \
-			echo "📥 Downloading $(subst _, ,$(word 2,$(subst :, ,$(file_desc))))..."; \
-			curl -fsSL "$(BASE_URL)/$(word 1,$(subst :, ,$(file_desc)))" -o "$(word 1,$(subst :, ,$(file_desc)))"; \
-			echo "✅ Downloaded $(notdir $(word 1,$(subst :, ,$(file_desc))))"; \
+	@for file_desc in $(GHAR_FILES); do \
+		file_path=$$(echo "$$file_desc" | cut -d: -f1); \
+		file_desc_part=$$(echo "$$file_desc" | cut -d: -f2 | sed 's/_/ /g'); \
+		file_name=$$(basename "$$file_path"); \
+		echo "📥 Checking for $$file_name..."; \
+		if [ ! -f "$$file_path" ]; then \
+			echo "📥 Downloading $$file_desc_part..."; \
+			curl -fsSL "$(BASE_URL)/$$file_path" -o "$$file_path"; \
+			echo "✅ Downloaded $$file_name"; \
 		else \
-			echo "⚠️  $(notdir $(word 1,$(subst :, ,$(file_desc)))) already exists - skipping download"; \
+			echo "⚠️  $$file_name already exists - skipping download"; \
 		fi; \
-	)
+	done
 	@echo ""
 	@echo "🎉 GHAR installation complete!"
 	@echo ""
 	@echo "What was installed:"
-	@$(foreach file_desc,$(GHAR_FILES),echo "  📄 $(word 1,$(subst :, ,$(file_desc))) - $(subst _, ,$(word 2,$(subst :, ,$(file_desc)))) (if missing)";)
+	@for file_desc in $(GHAR_FILES); do \
+		file_path=$$(echo "$$file_desc" | cut -d: -f1); \
+		file_desc_part=$$(echo "$$file_desc" | cut -d: -f2 | sed 's/_/ /g'); \
+		echo "  📄 $$file_path - $$file_desc_part (if missing)"; \
+	done
 	@echo ""
 	@echo "Configuration:"
 	@echo "  ⏰ Daily routine: Stale PR/issue check + uncommented issue investigation"
@@ -81,23 +88,35 @@ install: setup-dirs
 install-dry: setup-dirs
 	@echo "🔍 DRY RUN: Checking what would be installed..."
 	@echo ""
-	@$(foreach file_desc,$(GHAR_FILES), \
-		echo "📥 Checking $(notdir $(word 1,$(subst :, ,$(file_desc))))..."; \
-		if [ ! -f "$(word 1,$(subst :, ,$(file_desc)))" ]; then \
-			echo "🔽 Would download $(subst _, ,$(word 2,$(subst :, ,$(file_desc)))) from $(BASE_URL)/$(word 1,$(subst :, ,$(file_desc)))"; \
+	@for file_desc in $(GHAR_FILES); do \
+		file_path=$$(echo "$$file_desc" | cut -d: -f1); \
+		file_desc_part=$$(echo "$$file_desc" | cut -d: -f2 | sed 's/_/ /g'); \
+		file_name=$$(basename "$$file_path"); \
+		echo "📥 Checking $$file_name..."; \
+		if [ ! -f "$$file_path" ]; then \
+			echo "🔽 Would download $$file_desc_part from $(BASE_URL)/$$file_path"; \
 		else \
-			echo "⚠️  $(notdir $(word 1,$(subst :, ,$(file_desc)))) already exists - would skip download"; \
+			echo "⚠️  $$file_name already exists - would skip download"; \
 		fi; \
-	)
+	done
 	@echo ""
 	@echo "📋 Summary of what would be installed:"
-	@$(foreach file_desc,$(GHAR_FILES),echo "  📄 $(word 1,$(subst :, ,$(file_desc))) - $(subst _, ,$(word 2,$(subst :, ,$(file_desc))))";)
+	@for file_desc in $(GHAR_FILES); do \
+		file_path=$$(echo "$$file_desc" | cut -d: -f1); \
+		file_desc_part=$$(echo "$$file_desc" | cut -d: -f2 | sed 's/_/ /g'); \
+		echo "  📄 $$file_path - $$file_desc_part"; \
+	done
 	@echo ""
 	@echo "🚀 To actually install, run: make -f Makefile.ghar install"
 
 clean:
 	@echo "🗑️  Removing GHAR files..."
-	@$(foreach file_desc,$(GHAR_FILES),if [ -f "$(word 1,$(subst :, ,$(file_desc)))" ]; then rm -f "$(word 1,$(subst :, ,$(file_desc)))" && echo "Removed $(word 1,$(subst :, ,$(file_desc)))"; fi;)
+	@for file_desc in $(GHAR_FILES); do \
+		file_path=$$(echo "$$file_desc" | cut -d: -f1); \
+		if [ -f "$$file_path" ]; then \
+			rm -f "$$file_path" && echo "Removed $$file_path"; \
+		fi; \
+	done
 	@echo "✅ Cleaned up GHAR files"
 
 # Validation targets
@@ -111,4 +130,8 @@ info:
 	@echo "  SOURCE_BRANCH: $(SOURCE_BRANCH)"
 	@echo "  BASE_URL: $(BASE_URL)"
 	@echo "  Files to install:"
-	@$(foreach file_desc,$(GHAR_FILES),echo "    $(word 1,$(subst :, ,$(file_desc))) - $(subst _, ,$(word 2,$(subst :, ,$(file_desc))))";)
+	@for file_desc in $(GHAR_FILES); do \
+		file_path=$$(echo "$$file_desc" | cut -d: -f1); \
+		file_desc_part=$$(echo "$$file_desc" | cut -d: -f2 | sed 's/_/ /g'); \
+		echo "    $$file_path - $$file_desc_part"; \
+	done
