@@ -1,4 +1,4 @@
-name: GHAR - Daily Routine - Stale Check
+name: GHAR - Daily Routine
 
 on:
   schedule:
