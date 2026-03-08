@@ -7,3 +7,4 @@
 ## Guidelines
 
 * If there are files added or renamed the impact on `Makefile.ghar` has to be checked
+* `Makefile.ghar` has to worked in a piped mode
