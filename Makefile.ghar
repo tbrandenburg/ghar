@@ -14,7 +14,7 @@ SOURCE_REPO ?= tbrandenburg/ghar
 SOURCE_BRANCH ?= main
 
 # URLs for fetching files
-WORKFLOW_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.github/workflows/ghar-daily-routine.yml
+DAILY_WORKFLOW_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.github/workflows/ghar-daily-routine.yml
 ISSUE_WORKFLOW_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.github/workflows/ghar-issue-opened.yml
 OPENCODE_RUN_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.github/workflows/core-opencode-run.yml
 STALE_CHECK_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.opencode/commands/ghar-stale-check.md
@@ -46,7 +46,7 @@ install-workflow: setup-dirs
 	@echo "📥 Checking for ghar-daily-routine.yml..."
 	@if [ ! -f .github/workflows/ghar-daily-routine.yml ]; then \
 		echo "📥 Downloading daily-routine.yml..."; \
-		curl -fsSL "$(WORKFLOW_URL)" -o .github/workflows/ghar-daily-routine.yml; \
+		curl -fsSL "$(DAILY_WORKFLOW_URL)" -o .github/workflows/ghar-daily-routine.yml; \
 		echo "✅ Downloaded daily-routine.yml"; \
 	else \
 		echo "⚠️  ghar-daily-routine.yml already exists - skipping download"; \
@@ -145,5 +145,5 @@ info:
 	@echo "Configuration Information:"
 	@echo "  SOURCE_REPO: $(SOURCE_REPO)"
 	@echo "  SOURCE_BRANCH: $(SOURCE_BRANCH)"
-	@echo "  WORKFLOW_URL: $(WORKFLOW_URL)"
+	@echo "  DAILY_WORKFLOW_URL: $(DAILY_WORKFLOW_URL)"
 	@echo "  STALE_CHECK_URL: $(STALE_CHECK_URL)"
