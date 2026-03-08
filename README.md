@@ -8,6 +8,9 @@ Agent routines in Github workflows
 # One-liner installation
 curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install
 
+# One-liner force installation
+curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install-force
+
 # Commit and push the changes
 git add .github .opencode && git commit -m "feat: Add GHAR auto-routine"
 git push

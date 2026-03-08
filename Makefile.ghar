@@ -26,15 +26,16 @@ GHAR_FILES = \
 	.opencode/commands/ghar-security-check.md:Security_vulnerability_check_command \
 	.opencode/opencode.jsonc:OpenCode_configuration
 
-.PHONY: help install install-dry setup-dirs clean validate info
+.PHONY: help install install-dry install-force setup-dirs clean validate info
 
 help:
 	@echo "GitHub Auto-Routine (GHAR) - Daily Routine Installer"
 	@echo ""
 	@echo "Usage:"
-	@echo "  make -f Makefile.ghar install      Install complete daily routine system"
-	@echo "  make -f Makefile.ghar install-dry  Show what would be installed (dry-run)"
-	@echo "  make -f Makefile.ghar clean        Remove installed files"
+	@echo "  make -f Makefile.ghar install        Install complete daily routine system"
+	@echo "  make -f Makefile.ghar install-force  Install and overwrite existing files"
+	@echo "  make -f Makefile.ghar install-dry    Show what would be installed (dry-run)"
+	@echo "  make -f Makefile.ghar clean          Remove installed files"
 	@echo ""
 	@echo "One-liner installation:"
 	@echo "  curl -fsSL https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/Makefile.ghar | make -f - install"
@@ -55,8 +56,12 @@ install: setup-dirs
 		file_desc_part=$$(echo "$$file_desc" | cut -d: -f2 | sed 's/_/ /g'); \
 		file_name=$$(basename "$$file_path"); \
 		echo "📥 Checking for $$file_name..."; \
-		if [ ! -f "$$file_path" ]; then \
-			echo "📥 Downloading $$file_desc_part..."; \
+		if [ ! -f "$$file_path" ] || [ "$(FORCE)" = "1" ]; then \
+			if [ "$(FORCE)" = "1" ] && [ -f "$$file_path" ]; then \
+				echo "🔄 Force overwriting $$file_name..."; \
+			else \
+				echo "📥 Downloading $$file_desc_part..."; \
+			fi; \
 			curl -fsSL "$(BASE_URL)/$$file_path" -o "$$file_path"; \
 			echo "✅ Downloaded $$file_name"; \
 		else \
@@ -85,6 +90,9 @@ install: setup-dirs
 	@echo "  3. The workflows will run automatically (daily + on issue open)"
 	@echo ""
 	@echo "To customize the schedule, edit .github/workflows/ghar-daily-routine.yml"
+
+install-force:
+	@$(MAKE) -f $(firstword $(MAKEFILE_LIST)) install FORCE=1
 
 install-dry: setup-dirs
 	@echo "🔍 DRY RUN: Checking what would be installed..."
