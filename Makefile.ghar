@@ -15,11 +15,13 @@ SOURCE_BRANCH ?= main
 
 # URLs for fetching files
 WORKFLOW_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.github/workflows/ghar-daily-routine.yml
+ISSUE_WORKFLOW_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.github/workflows/ghar-issue-opened.yml
 OPENCODE_RUN_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.github/workflows/core-opencode-run.yml
 STALE_CHECK_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.opencode/commands/ghar-stale-check.md
+ISSUE_INVESTIGATE_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.opencode/commands/ghar-issue-investigate.md
 OPENCODE_CONFIG_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/.opencode/opencode.jsonc
 
-.PHONY: help install install-workflow install-opencode-run install-stale-check install-opencode-config setup-dirs clean
+.PHONY: help install install-workflow install-issue-workflow install-opencode-run install-stale-check install-issue-investigate install-opencode-config setup-dirs clean
 
 help:
 	@echo "GitHub Auto-Routine (GHAR) - Daily Routine Installer"
@@ -50,6 +52,16 @@ install-workflow: setup-dirs
 		echo "⚠️  ghar-daily-routine.yml already exists - skipping download"; \
 	fi
 
+install-issue-workflow: setup-dirs
+	@echo "📥 Checking for ghar-issue-opened.yml..."
+	@if [ ! -f .github/workflows/ghar-issue-opened.yml ]; then \
+		echo "📥 Downloading ghar-issue-opened.yml..."; \
+		curl -fsSL "$(ISSUE_WORKFLOW_URL)" -o .github/workflows/ghar-issue-opened.yml; \
+		echo "✅ Downloaded ghar-issue-opened.yml"; \
+	else \
+		echo "⚠️  ghar-issue-opened.yml already exists - skipping download"; \
+	fi
+
 install-opencode-run: setup-dirs
 	@echo "📥 Checking for core-opencode-run.yml..."
 	@if [ ! -f .github/workflows/core-opencode-run.yml ]; then \
@@ -70,6 +82,16 @@ install-stale-check: setup-dirs
 		echo "⚠️  ghar-stale-check.md already exists - skipping download"; \
 	fi
 
+install-issue-investigate: setup-dirs
+	@echo "📥 Checking for ghar-issue-investigate.md..."
+	@if [ ! -f .opencode/commands/ghar-issue-investigate.md ]; then \
+		echo "📥 Downloading ghar-issue-investigate.md..."; \
+		curl -fsSL "$(ISSUE_INVESTIGATE_URL)" -o .opencode/commands/ghar-issue-investigate.md; \
+		echo "✅ Downloaded ghar-issue-investigate.md"; \
+	else \
+		echo "⚠️  ghar-issue-investigate.md already exists - skipping download"; \
+	fi
+
 install-opencode-config: setup-dirs
 	@echo "📥 Checking for OpenCode configuration..."
 	@if [ ! -f .opencode/opencode.json ] && [ ! -f .opencode/opencode.jsonc ]; then \
@@ -80,34 +102,38 @@ install-opencode-config: setup-dirs
 		echo "⚠️  OpenCode configuration already exists - skipping download"; \
 	fi
 
-install: install-opencode-run install-workflow install-stale-check install-opencode-config
+install: install-opencode-run install-workflow install-issue-workflow install-stale-check install-issue-investigate install-opencode-config
 	@echo ""
-	@echo "🎉 Daily routine installation complete!"
+	@echo "🎉 GHAR installation complete!"
 	@echo ""
 	@echo "What was installed:"
-	@echo "  📄 .github/workflows/ghar-daily-routine.yml        - Main daily routine workflow (if missing)"
+	@echo "  📄 .github/workflows/ghar-daily-routine.yml        - Daily routine workflow (if missing)"
+	@echo "  📄 .github/workflows/ghar-issue-opened.yml         - Auto issue investigation workflow (if missing)"
 	@echo "  📄 .github/workflows/core-opencode-run.yml          - OpenCode runner (if missing)"
 	@echo "  📄 .opencode/commands/ghar-stale-check.md      - Stale check command (if missing)"
+	@echo "  📄 .opencode/commands/ghar-issue-investigate.md - Issue investigation command (if missing)"
 	@echo "  📄 .opencode/opencode.jsonc                    - OpenCode configuration (if missing)"
 	@echo ""
 	@echo "Configuration:"
-	@echo "  ⏰ Schedule: Daily"
-	@echo "  📋 Stale PR check"
-	@echo "  📋 Stale issue check"
+	@echo "  ⏰ Daily routine: Stale PR/issue check"
+	@echo "  🔍 Auto investigation: New issue opened"
+	@echo "  📋 Manual commands available"
 	@echo ""
 	@echo "Next steps:"
 	@echo "  1. Commit and push the new files:"
-	@echo "     git add .github .opencode && git commit -m 'Add daily routine workflow'"
+	@echo "     git add .github .opencode && git commit -m 'Add GHAR auto-routines'"
 	@echo "  2. Test the workflow manually in GitHub Actions"
-	@echo "  3. The workflow will run automatically daily"
+	@echo "  3. The workflows will run automatically (daily + on issue open)"
 	@echo ""
 	@echo "To customize the schedule, edit .github/workflows/ghar-daily-routine.yml"
 
 clean:
-	@echo "🗑️  Removing daily routine files..."
+	@echo "🗑️  Removing GHAR files..."
 	@rm -f .github/workflows/ghar-daily-routine.yml
+	@rm -f .github/workflows/ghar-issue-opened.yml
 	@rm -f .opencode/commands/ghar-stale-check.md
-	@echo "✅ Cleaned up daily routine files"
+	@rm -f .opencode/commands/ghar-issue-investigate.md
+	@echo "✅ Cleaned up GHAR files"
 	@echo "   Note: core-opencode-run.yml and opencode.jsonc were preserved as they may be used by other workflows"
 
 # Validation targets

@@ -16,9 +16,10 @@ git push
 ## 🎯 Current Features
 
 - **Daily automated checks** for stale PRs and issues (>3 days old)
+- **Auto issue investigation** - automatically investigates and posts implementation plan when new issues are opened
 - **Smart filtering** - ignores drafts, WIP labels, long-term items
 - **One-time notifications** - won't spam the same item
-- **OpenCode integration** - trigger checks via `opencode run --command ghar-stale-check`
+- **OpenCode integration** - trigger checks via `opencode run --command ghar-stale-check` or `opencode run --command ghar-issue-investigate`
 
 ## 📋 Commands
 
