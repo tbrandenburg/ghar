@@ -47,21 +47,18 @@ setup-dirs:
 	@mkdir -p .github/workflows
 	@mkdir -p .opencode/commands
 
-# Function to install a single file
-# Usage: $(call install-file,local_path,description)
-define install-file
-	@echo "📥 Checking for $(notdir $1)..."
-	@if [ ! -f "$1" ]; then \
-		echo "📥 Downloading $(subst _, ,$2)..."; \
-		curl -fsSL "$(BASE_URL)/$1" -o "$1"; \
-		echo "✅ Downloaded $(notdir $1)"; \
-	else \
-		echo "⚠️  $(notdir $1) already exists - skipping download"; \
-	fi
-endef
 
 install: setup-dirs
-	@$(foreach file_desc,$(GHAR_FILES),$(call install-file,$(word 1,$(subst :, ,$(file_desc))),$(word 2,$(subst :, ,$(file_desc)))))
+	@$(foreach file_desc,$(GHAR_FILES), \
+		echo "📥 Checking for $(notdir $(word 1,$(subst :, ,$(file_desc))))..."; \
+		if [ ! -f "$(word 1,$(subst :, ,$(file_desc)))" ]; then \
+			echo "📥 Downloading $(subst _, ,$(word 2,$(subst :, ,$(file_desc))))..."; \
+			curl -fsSL "$(BASE_URL)/$(word 1,$(subst :, ,$(file_desc)))" -o "$(word 1,$(subst :, ,$(file_desc)))"; \
+			echo "✅ Downloaded $(notdir $(word 1,$(subst :, ,$(file_desc))))"; \
+		else \
+			echo "⚠️  $(notdir $(word 1,$(subst :, ,$(file_desc)))) already exists - skipping download"; \
+		fi; \
+	)
 	@echo ""
 	@echo "🎉 GHAR installation complete!"
 	@echo ""
