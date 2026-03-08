@@ -408,7 +408,7 @@ describe("{feature}", () => {
 
 ## Metadata
 
-- **Investigated by**: Claude
+- **Investigated by**: GHAR
 - **Timestamp**: {ISO timestamp}
 - **Artifact**: `.ghar/issues/issue-{number}.md`
 
