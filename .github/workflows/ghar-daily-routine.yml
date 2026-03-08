@@ -1,0 +1,23 @@
+name: GHAR - Daily Routine - Stale Check
+
+on:
+  schedule:
+    # Run daily at 6:00 AM CET (5:00 UTC)
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    # Allow manual triggering for testing
+
+jobs:
+  stale-check:
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: stale-check
+      prompt-file: .opencode/commands/ghar-stale-check.md
+      timeout-minutes: 30
+      model: "opencode/big-pickle"
+    permissions:
+      # Required permissions for the job to access and modify issues/PRs
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
