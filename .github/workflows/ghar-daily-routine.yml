@@ -23,7 +23,6 @@ jobs:
       run-name: stale-check
       prompt-file: .opencode/commands/ghar-stale-check.md
       timeout-minutes: 30
-      model: "opencode/big-pickle"
     permissions:
       # Required permissions for the job to access and modify issues/PRs
       issues: write
@@ -65,7 +64,6 @@ jobs:
       command: ghar-issue-investigate
       prompt: ${{ needs.find-uncommented-issue.outputs.issue_number }}
       timeout-minutes: 30
-      model: "opencode/big-pickle"
     permissions:
       # Required permissions for the job to access and modify issues/PRs
       issues: write
