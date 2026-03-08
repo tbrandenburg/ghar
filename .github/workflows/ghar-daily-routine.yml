@@ -8,15 +8,6 @@ on:
     # Allow manual triggering for testing
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Verify GitHub CLI
-        run: |
-          gh --version
-
   stale-check:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
@@ -31,7 +22,6 @@ jobs:
     secrets: inherit
 
   find-uncommented-issue:
-    needs: setup
     runs-on: ubuntu-latest
     outputs:
       issue_number: ${{ steps.find-issue.outputs.issue_number }}
@@ -69,4 +59,16 @@ jobs:
       issues: write
       pull-requests: write
       contents: read
+    secrets: inherit
+
+  security-check:
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: security-check
+      command: ghar-security-check
+    permissions:
+      # Required permissions for security scanning and issue creation
+      issues: write
+      contents: read
+      security-events: read
     secrets: inherit

@@ -1,3 +1,7 @@
+---
+description: Checking for stale pull requests and issues in this repository and commenting on them to notify the repository owner
+---
+
 # Stale PR and Issue Check
 
 You are tasked with checking for stale pull requests and issues in this repository and commenting on them to notify the repository owner.
