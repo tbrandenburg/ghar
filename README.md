@@ -33,7 +33,23 @@ make -f Makefile.ghar info       # Show configuration
 make -f Makefile.ghar clean      # Remove installed files
 ```
 
+## 🧪 Local Testing
+
+Test workflows locally with [act](https://github.com/nektos/act):
+
+```bash
+# Run stale check
+act workflow_dispatch -j stale-check -W .github/workflows/ghar-daily-routine.yml -s GITHUB_TOKEN="$(gh auth token)"
+
+# Run security check  
+act workflow_dispatch -j security-check -W .github/workflows/ghar-daily-routine.yml -s GITHUB_TOKEN="$(gh auth token)"
+
+# Run full daily routine
+act workflow_dispatch -W .github/workflows/ghar-daily-routine.yml -s GITHUB_TOKEN="$(gh auth token)"
+```
+
 ## 🔧 Requirements
 
 - `git` and `gh` (GitHub CLI)
 - `make` (pre-installed on most systems)
+- `act` (optional, for local testing)
