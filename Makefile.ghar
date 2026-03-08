@@ -91,8 +91,7 @@ install: setup-dirs
 	@echo ""
 	@echo "To customize the schedule, edit .github/workflows/ghar-daily-routine.yml"
 
-install-force:
-	@$(MAKE) -f $(firstword $(MAKEFILE_LIST)) install FORCE=1
+install-force: clean install
 
 install-dry: setup-dirs
 	@echo "🔍 DRY RUN: Checking what would be installed..."
