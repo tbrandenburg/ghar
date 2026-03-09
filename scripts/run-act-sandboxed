@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+VERBOSE=${VERBOSE:-false}
+DRY_RUN=${DRY_RUN:-false}
+
+usage() {
+  echo "Usage: run-act-sandboxed <workflow-file> <job-name>"
+  echo
+  echo "Run GitHub Actions workflows locally in a sandboxed environment."
+  echo "Creates a temporary clone of the repository to prevent any changes"
+  echo "from affecting your working directory."
+  echo
+  echo "Arguments:"
+  echo "  workflow-file   Path to workflow file (e.g., .github/workflows/example.yml)"
+  echo "  job-name        Name of the job to run"
+  echo
+  echo "Environment Variables:"
+  echo "  VERBOSE=true    Show detailed output including clone progress"
+  echo "  DRY_RUN=true    Show what would be executed without running"
+  echo
+  echo "Examples:"
+  echo "  run-act-sandboxed .github/workflows/ghar-daily-routine.yml stale-check"
+  echo "  VERBOSE=true run-act-sandboxed .github/workflows/ghar-daily-routine.yml stale-check"
+  echo "  DRY_RUN=true run-act-sandboxed .github/workflows/ghar-daily-routine.yml stale-check"
+  exit 1
+}
+
+require_cmd() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "Error: required command not found: $1" >&2
+    echo "Please install $1 to continue." >&2
+    exit 1
+  fi
+}
+
+cleanup() {
+  if [[ -n "${TMP_DIR:-}" && -d "${TMP_DIR:-}" ]]; then
+    if [[ "$VERBOSE" == "true" ]]; then
+      echo "Cleaning up temporary directory: $TMP_DIR"
+    fi
+    rm -rf "$TMP_DIR"
+  fi
+}
+
+log() {
+  if [[ "$VERBOSE" == "true" ]]; then
+    echo "$@"
+  fi
+}
+
+[[ $# -eq 2 ]] || usage
+
+WORKFLOW="$1"
+JOB="$2"
+
+# Check required commands
+require_cmd git
+require_cmd act
+require_cmd gh
+
+# Validate we're in a git repository
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || {
+  echo "Error: not inside a git repository."
+  echo "Please run this script from within a git repository."
+  exit 1
+}
+
+# Get and validate GitHub token
+if ! GITHUB_TOKEN="$(gh auth token 2>/dev/null)"; then
+  echo "Error: failed to obtain GitHub token."
+  echo "Please authenticate with GitHub: gh auth login"
+  exit 1
+fi
+
+if [[ -z "$GITHUB_TOKEN" ]]; then
+  echo "Error: GitHub token is empty."
+  echo "Please authenticate with GitHub: gh auth login"
+  exit 1
+fi
+
+# Create temporary directory with cleanup trap
+TMP_DIR="$(mktemp -d)"
+trap cleanup EXIT
+
+CLONE_DIR="$TMP_DIR/repo"
+
+# Handle dry run mode
+if [[ "$DRY_RUN" == "true" ]]; then
+  echo "DRY RUN MODE - No actual execution"
+  echo ""
+  echo "Would execute:"
+  echo "  Repository: $REPO_ROOT"
+  echo "  Temporary clone: $CLONE_DIR"
+  echo "  Workflow: $WORKFLOW"
+  echo "  Job: $JOB"
+  echo "  Command: act workflow_dispatch -W $WORKFLOW -j $JOB -s GITHUB_TOKEN=***"
+  echo ""
+  echo "To run for real, execute without DRY_RUN=true"
+  exit 0
+fi
+
+echo "Creating clean repository clone..."
+log "Cloning $REPO_ROOT to $CLONE_DIR"
+
+if [[ "$VERBOSE" == "true" ]]; then
+  git clone "$REPO_ROOT" "$CLONE_DIR"
+else
+  git clone "$REPO_ROOT" "$CLONE_DIR" >/dev/null 2>&1
+fi
+
+cd "$CLONE_DIR"
+
+# Validate workflow file exists
+if [[ ! -f "$WORKFLOW" ]]; then
+  echo "Error: workflow file not found: $WORKFLOW"
+  echo "Available workflows:"
+  find .github/workflows -name "*.yml" -o -name "*.yaml" 2>/dev/null | sort || echo "  No workflows found"
+  exit 1
+fi
+
+echo
+echo "Running act in sandboxed environment:"
+echo "  📁 Repository: $(basename "$REPO_ROOT")"
+echo "  🔧 Workflow:   $WORKFLOW"
+echo "  🎯 Job:        $JOB"
+echo "  🏠 Sandbox:    $CLONE_DIR"
+echo
+
+log "Executing: act workflow_dispatch -W $WORKFLOW -j $JOB -s GITHUB_TOKEN=***"
+
+# Run act with the workflow
+act workflow_dispatch \
+  -W "$WORKFLOW" \
+  -j "$JOB" \
+  -s GITHUB_TOKEN="$GITHUB_TOKEN"
+
+echo
+echo "✅ Sandboxed execution completed successfully!"
+echo "💡 All changes were isolated to the temporary clone and have been cleaned up."
