@@ -3,6 +3,7 @@ set -euo pipefail
 
 VERBOSE=${VERBOSE:-false}
 DRY_RUN=${DRY_RUN:-false}
+ACT_CONTAINER=${ACT_CONTAINER:-"catthehacker/ubuntu:act-latest"}
 
 usage() {
   echo "Usage: run-act-sandboxed <workflow-file> <job-name>"
@@ -16,8 +17,13 @@ usage() {
   echo "  job-name        Name of the job to run"
   echo
   echo "Environment Variables:"
-  echo "  VERBOSE=true    Show detailed output including clone progress"
-  echo "  DRY_RUN=true    Show what would be executed without running"
+  echo "  VERBOSE=true      Show detailed output including clone progress"
+  echo "  DRY_RUN=true      Show what would be executed without running"
+  echo "  ACT_CONTAINER=... Override the container image to use"
+  echo "                    Default: catthehacker/ubuntu:act-latest"
+  echo "                    Options: catthehacker/ubuntu:act-latest (fast, minimal)"
+  echo "                             nektos/act-environments-ubuntu:22.04 (full)"
+  echo "                             ghcr.io/catthehacker/ubuntu:full-22.04 (complete)"
   echo
   echo "Examples:"
   echo "  run-act-sandboxed .github/workflows/ghar-daily-routine.yml stale-check"
@@ -79,6 +85,20 @@ if [[ -z "$GITHUB_TOKEN" ]]; then
   exit 1
 fi
 
+# Extract repository information from git remote
+REPO_URL="$(git remote get-url origin 2>/dev/null || echo "")"
+if [[ "$REPO_URL" =~ github\.com[:/]([^/]+)/([^/.]+) ]]; then
+  REPO_OWNER="${BASH_REMATCH[1]}"
+  REPO_NAME="${BASH_REMATCH[2]}"
+  GITHUB_REPOSITORY="$REPO_OWNER/$REPO_NAME"
+else
+  echo "Warning: Could not extract GitHub repository info from remote URL: $REPO_URL"
+  echo "Some workflow features may not work correctly."
+  GITHUB_REPOSITORY=""
+fi
+
+log "Detected repository: $GITHUB_REPOSITORY"
+
 # Create temporary directory with cleanup trap
 TMP_DIR="$(mktemp -d)"
 trap cleanup EXIT
@@ -111,6 +131,18 @@ fi
 
 cd "$CLONE_DIR"
 
+# Fix git remote to point to GitHub instead of local path
+if [[ -n "$GITHUB_REPOSITORY" && -n "$REPO_URL" ]]; then
+  log "Setting git remote to GitHub URL: $REPO_URL"
+  git remote set-url origin "$REPO_URL"
+  
+  # Verify the remote was set correctly
+  if [[ "$VERBOSE" == "true" ]]; then
+    echo "Git remote after update:"
+    git remote -v
+  fi
+fi
+
 # Validate workflow file exists
 if [[ ! -f "$WORKFLOW" ]]; then
   echo "Error: workflow file not found: $WORKFLOW"
@@ -125,15 +157,27 @@ echo "  📁 Repository: $(basename "$REPO_ROOT")"
 echo "  🔧 Workflow:   $WORKFLOW"
 echo "  🎯 Job:        $JOB"
 echo "  🏠 Sandbox:    $CLONE_DIR"
+if [[ -n "$GITHUB_REPOSITORY" ]]; then
+  echo "  📋 GitHub:     $GITHUB_REPOSITORY"
+fi
+echo "  🐳 Container:  $ACT_CONTAINER"
 echo
 
-log "Executing: act workflow_dispatch -W $WORKFLOW -j $JOB -s GITHUB_TOKEN=***"
+log "Executing: act workflow_dispatch -W $WORKFLOW -j $JOB"
+log "Environment: GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
 
-# Run act with the workflow
+# Prepare environment variables for act
+ENV_ARGS=("-s" "GITHUB_TOKEN=$GITHUB_TOKEN")
+if [[ -n "$GITHUB_REPOSITORY" ]]; then
+  ENV_ARGS+=("--env" "GITHUB_REPOSITORY=$GITHUB_REPOSITORY")
+fi
+
+# Run act with the workflow and specified container
 act workflow_dispatch \
+  -P "ubuntu-latest=$ACT_CONTAINER" \
   -W "$WORKFLOW" \
   -j "$JOB" \
-  -s GITHUB_TOKEN="$GITHUB_TOKEN"
+  "${ENV_ARGS[@]}"
 
 echo
 echo "✅ Sandboxed execution completed successfully!"
