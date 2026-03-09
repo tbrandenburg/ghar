@@ -21,9 +21,12 @@ GHAR_FILES = \
 	.github/workflows/core-opencode-run.yml:OpenCode_runner \
 	.github/workflows/ghar-daily-routine.yml:Daily_routine_workflow \
 	.github/workflows/ghar-issue-opened.yml:Auto_issue_investigation_workflow \
+	.github/workflows/ghar-issue-command-executor.yml:Issue_comment_command_executor \
+	.github/workflows/ghar-issue-commands-list.yml:Issue_commands_lister \
 	.opencode/commands/ghar-stale-check.md:Stale_check_command \
 	.opencode/commands/ghar-issue-investigate.md:Issue_investigation_command \
 	.opencode/commands/ghar-security-check.md:Security_vulnerability_check_command \
+	.opencode/agents/review.md:Review_agent \
 	.opencode/opencode.jsonc:OpenCode_configuration
 
 .PHONY: help install install-dry install-force setup-dirs clean validate info
@@ -48,6 +51,7 @@ setup-dirs:
 	@echo "📁 Creating required directories..."
 	@mkdir -p .github/workflows
 	@mkdir -p .opencode/commands
+	@mkdir -p .opencode/agents
 
 
 install: setup-dirs
@@ -81,6 +85,8 @@ install: setup-dirs
 	@echo "Configuration:"
 	@echo "  ⏰ Daily routine: Stale PR/issue check + uncommented issue investigation"
 	@echo "  🔍 Auto investigation: New issue opened"
+	@echo "  💬 Issue commands: Execute commands from issue comments"
+	@echo "  🤖 Agent support: Use specialized agents for tasks"
 	@echo "  📋 Manual commands available"
 	@echo ""
 	@echo "Next steps:"
@@ -121,6 +127,8 @@ install-force: setup-dirs
 	@echo "Configuration:"
 	@echo "  ⏰ Daily routine: Stale PR/issue check + uncommented issue investigation + security scan"
 	@echo "  🔍 Auto investigation: New issue opened"
+	@echo "  💬 Issue commands: Execute commands from issue comments"
+	@echo "  🤖 Agent support: Use specialized agents for tasks"
 	@echo "  📋 Manual commands available"
 	@echo ""
 	@echo "Next steps:"
