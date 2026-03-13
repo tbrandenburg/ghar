@@ -26,6 +26,7 @@ GHAR_FILES = \
 	.opencode/commands/ghar-stale-check.md:Stale_check_command \
 	.opencode/commands/ghar-issue-investigate.md:Issue_investigation_command \
 	.opencode/commands/ghar-security-check.md:Security_vulnerability_check_command \
+	.opencode/commands/ghar-maintainability-review.md:Maintainability_review_command \
 	.opencode/agents/review.md:Review_agent \
 	.opencode/opencode.jsonc:OpenCode_configuration
 
