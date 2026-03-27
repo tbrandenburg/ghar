@@ -25,8 +25,12 @@ GHAR_FILES = \
 	.github/workflows/ghar-issue-commands-list.yml:Issue_commands_lister \
 	.opencode/commands/ghar-stale-check.md:Stale_check_command \
 	.opencode/commands/ghar-issue-investigate.md:Issue_investigation_command \
+	.opencode/commands/ghar-issue-fix.md:Issue_fix_command \
 	.opencode/commands/ghar-security-check.md:Security_vulnerability_check_command \
 	.opencode/commands/ghar-maintainability-review.md:Maintainability_review_command \
+	.opencode/commands/ghar-resolve-ci-errors.md:Resolve_CI_errors_command \
+	.opencode/commands/ghar-commit-push.md:Commit_and_push_command \
+	.opencode/commands/ghar-review.md:Review_command \
 	.opencode/agents/review.md:Review_agent \
 	.opencode/opencode.jsonc:OpenCode_configuration
 
@@ -102,7 +106,7 @@ install: setup-dirs
 	@echo "  3. The workflows will run automatically (daily + on issue open)"
 	@echo ""
 	@echo "To customize the schedule, edit .github/workflows/ghar-daily-routine.yml"
-
+curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install
 install-force: setup-dirs
 	@echo "🗑️  Removing existing GHAR files..."
 	@for file_desc in $(GHAR_FILES); do \
