@@ -67,8 +67,13 @@ install: setup-dirs
 			else \
 				echo "📥 Downloading $$file_desc_part..."; \
 			fi; \
-			curl -fsSL "$(BASE_URL)/$$file_path" -o "$$file_path"; \
-			echo "✅ Downloaded $$file_name"; \
+			if curl -fsSL "$(BASE_URL)/$$file_path" -o "$$file_path"; then \
+				echo "✅ Downloaded $$file_name"; \
+			else \
+				echo "❌ Failed to download $$file_name from $(BASE_URL)/$$file_path"; \
+				rm -f "$$file_path"; \
+				exit 1; \
+			fi; \
 		else \
 			echo "⚠️  $$file_name already exists - skipping download"; \
 		fi; \
@@ -112,8 +117,13 @@ install-force: setup-dirs
 		file_desc_part=$$(echo "$$file_desc" | cut -d: -f2 | sed 's/_/ /g'); \
 		file_name=$$(basename "$$file_path"); \
 		echo "📥 Downloading $$file_desc_part..."; \
-		curl -fsSL "$(BASE_URL)/$$file_path" -o "$$file_path"; \
-		echo "✅ Downloaded $$file_name"; \
+		if curl -fsSL "$(BASE_URL)/$$file_path" -o "$$file_path"; then \
+			echo "✅ Downloaded $$file_name"; \
+		else \
+			echo "❌ Failed to download $$file_name from $(BASE_URL)/$$file_path"; \
+			rm -f "$$file_path"; \
+			exit 1; \
+		fi; \
 	done
 	@echo ""
 	@echo "🎉 GHAR installation complete!"
