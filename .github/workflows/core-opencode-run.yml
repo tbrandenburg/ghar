@@ -58,10 +58,6 @@ jobs:
   run:
     runs-on: ${{ inputs.runner }}
     timeout-minutes: ${{ inputs.timeout-minutes }}
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
     outputs:
       results: ${{ steps.process-results.outputs.results }}
       results-truncated: ${{ steps.process-results.outputs.results-truncated }}
