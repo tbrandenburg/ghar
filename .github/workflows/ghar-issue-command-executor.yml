@@ -122,7 +122,6 @@ jobs:
       issues: write
       pull-requests: write
       contents: write
-      workflows: write
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: "${{ github.event.issue.number != null && format('issue-{0}-comment-{1}', github.event.issue.number, github.event.comment.id) || format('pr-{0}-comment-{1}', github.event.pull_request.number, github.event.comment.id) }}"
