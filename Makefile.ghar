@@ -9,6 +9,9 @@
 # Or with custom source repo:
 #   curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install SOURCE_REPO=owner/repo
 
+# GHAR version (bumped on each release)
+GHAR_VERSION = 0.1.0
+
 # Default source repository (can be overridden)
 SOURCE_REPO ?= tbrandenburg/ghar
 SOURCE_BRANCH ?= main
@@ -106,7 +109,9 @@ install: setup-dirs
 	@echo "  3. The workflows will run automatically (daily + on issue open)"
 	@echo ""
 	@echo "To customize the schedule, edit .github/workflows/ghar-daily-routine.yml"
-curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install
+	@echo "$(GHAR_VERSION)" > .ghar-version
+	@echo "  📌 Installed version $(GHAR_VERSION) recorded in .ghar-version"
+
 install-force: setup-dirs
 	@echo "🗑️  Removing existing GHAR files..."
 	@for file_desc in $(GHAR_FILES); do \
@@ -153,6 +158,8 @@ install-force: setup-dirs
 	@echo "  3. The workflows will run automatically (daily + on issue open)"
 	@echo ""
 	@echo "To customize the schedule, edit .github/workflows/ghar-daily-routine.yml"
+	@echo "$(GHAR_VERSION)" > .ghar-version
+	@echo "  📌 Installed version $(GHAR_VERSION) recorded in .ghar-version"
 
 install-dry: setup-dirs
 	@echo "🔍 DRY RUN: Checking what would be installed..."
@@ -187,6 +194,7 @@ clean:
 		fi; \
 	done
 	@echo "✅ Cleaned up GHAR files"
+	@rm -f .ghar-version && echo "Removed .ghar-version"
 
 # Validation targets
 validate:
@@ -195,9 +203,11 @@ validate:
 # Info target for debugging
 info:
 	@echo "Configuration Information:"
+	@echo "  GHAR_VERSION: $(GHAR_VERSION)"
 	@echo "  SOURCE_REPO: $(SOURCE_REPO)"
 	@echo "  SOURCE_BRANCH: $(SOURCE_BRANCH)"
 	@echo "  BASE_URL: $(BASE_URL)"
+	@if [ -f .ghar-version ]; then echo "  Installed version: $$(cat .ghar-version)"; else echo "  Installed version: (not installed)"; fi
 	@echo "  Files to install:"
 	@for file_desc in $(GHAR_FILES); do \
 		file_path=$$(echo "$$file_desc" | cut -d: -f1); \
