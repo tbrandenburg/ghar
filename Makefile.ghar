@@ -37,7 +37,7 @@ GHAR_FILES = \
 	.opencode/agents/review.md:Review_agent \
 	.opencode/opencode.jsonc:OpenCode_configuration
 
-.PHONY: help install install-dry install-force setup-dirs clean validate info
+.PHONY: help install install-dry install-force setup-dirs clean validate info publish
 
 help:
 	@echo "GitHub Auto-Routine (GHAR) - Daily Routine Installer"
@@ -47,6 +47,9 @@ help:
 	@echo "  make -f Makefile.ghar install-force  Install and overwrite existing files"
 	@echo "  make -f Makefile.ghar install-dry    Show what would be installed (dry-run)"
 	@echo "  make -f Makefile.ghar clean          Remove installed files"
+	@echo "  make -f Makefile.ghar publish        Release next patch version"
+	@echo "  make -f Makefile.ghar publish BUMP=minor  Release next minor version"
+	@echo "  make -f Makefile.ghar publish BUMP=major  Release next major version"
 	@echo ""
 	@echo "One-liner installation:"
 	@echo "  curl -fsSL https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)/Makefile.ghar | make -f - install"
@@ -214,3 +217,32 @@ info:
 		file_desc_part=$$(echo "$$file_desc" | cut -d: -f2 | sed 's/_/ /g'); \
 		echo "    $$file_path - $$file_desc_part"; \
 	done
+
+# Publish a new release: bumps version, commits, tags, pushes, and creates a GitHub release.
+# Usage:
+#   make -f Makefile.ghar publish BUMP=patch   (default)
+#   make -f Makefile.ghar publish BUMP=minor
+#   make -f Makefile.ghar publish BUMP=major
+BUMP ?= patch
+
+publish:
+	@command -v gh >/dev/null 2>&1 || { echo "❌ gh (GitHub CLI) is required for publish"; exit 1; }
+	@current="$(GHAR_VERSION)"; \
+	major=$$(echo "$$current" | cut -d. -f1); \
+	minor=$$(echo "$$current" | cut -d. -f2); \
+	patch=$$(echo "$$current" | cut -d. -f3); \
+	case "$(BUMP)" in \
+		major) major=$$((major+1)); minor=0; patch=0 ;; \
+		minor) minor=$$((minor+1)); patch=0 ;; \
+		patch) patch=$$((patch+1)) ;; \
+		*) echo "❌ BUMP must be patch, minor, or major"; exit 1 ;; \
+	esac; \
+	new="$$major.$$minor.$$patch"; \
+	echo "📦 Bumping version: $$current -> $$new ($(BUMP))"; \
+	sed -i "s/^GHAR_VERSION = .*/GHAR_VERSION = $$new/" Makefile.ghar; \
+	git add Makefile.ghar; \
+	git commit -m "chore: release v$$new"; \
+	git tag "v$$new"; \
+	git push && git push origin "v$$new"; \
+	gh release create "v$$new" --title "v$$new" --generate-notes; \
+	echo "✅ Released v$$new"
