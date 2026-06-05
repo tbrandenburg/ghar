@@ -10,7 +10,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: evidence-collector-alpha
-      prompt: "Echo exactly: Collect issue facts and produce GHAR:EVIDENCE"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -24,7 +24,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: plan-conservative-alpha
-      prompt: "Echo exactly: Produce GHAR:PLAN conservative"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -38,7 +38,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: plan-maintainer-alpha
-      prompt: "Echo exactly: Produce GHAR:PLAN maintainer"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -52,7 +52,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: plan-robust-alpha
-      prompt: "Echo exactly: Produce GHAR:PLAN robust"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -69,7 +69,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: plan-judge-alpha
-      prompt: "Echo exactly: Produce GHAR:PLAN_FINAL"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -83,7 +83,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: seed-pr-writer-alpha
-      prompt: "Echo exactly: Create draft PR and GHAR:SEED_PR"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -97,7 +97,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: pr-digest-alpha
-      prompt: "Echo exactly: Analyze seed PR and create GHAR:PR_DIGEST"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -111,7 +111,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: variant-minimal-alpha
-      prompt: "Echo exactly: Produce GHAR:VARIANT_MINIMAL"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -125,7 +125,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: variant-robust-alpha
-      prompt: "Echo exactly: Produce GHAR:VARIANT_ROBUST"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -139,7 +139,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: variant-maintainer-alpha
-      prompt: "Echo exactly: Produce GHAR:VARIANT_MAINTAINER"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -153,7 +153,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: variant-tests-alpha
-      prompt: "Echo exactly: Produce GHAR:VARIANT_TESTS"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -171,7 +171,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: improvement-bundle-alpha
-      prompt: "Echo exactly: Produce GHAR:IMPROVEMENTS"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -185,7 +185,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: pr-improver-alpha
-      prompt: "Echo exactly: Apply improvements to PR"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -199,7 +199,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: review-tests-alpha
-      prompt: "Echo exactly: Produce GHAR:REVIEW_TESTS"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -213,7 +213,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: review-architecture-alpha
-      prompt: "Echo exactly: Produce GHAR:REVIEW_ARCH"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -227,7 +227,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: review-risk-alpha
-      prompt: "Echo exactly: Produce GHAR:REVIEW_RISK"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -244,7 +244,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: pr-polish-alpha
-      prompt: "Echo exactly: Produce GHAR:PR_FINAL"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -258,7 +258,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: ci-agent-alpha
-      prompt: "Echo exactly: Fix CI failures until green"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -272,7 +272,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: merge-conflict-agent-alpha
-      prompt: "Echo exactly: Resolve merge conflicts and re-run checks"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -286,7 +286,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: self-review-alpha
-      prompt: "Echo exactly: Review final diff and approve"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -300,7 +300,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: merge-pr-alpha
-      prompt: "Echo exactly: Merge pull request"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -314,7 +314,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: post-merge-report-alpha
-      prompt: "Echo exactly: Post final GHAR:DONE report"
+      prompt: "Just write: This is my task. Do not perform the task!"
       timeout-minutes: 30
     permissions:
       issues: write
