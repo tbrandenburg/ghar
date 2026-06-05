@@ -38,6 +38,8 @@ For `docs` work, keep TDD lightweight and contract-level: verify the visible tex
 
 Before editing, record the baseline changed-file list. Modify only files required by the approved spec and minimal verification. For docs work, prefer changing only the target prose file; if a test file is truly needed, justify it in the artifact and keep it singular and small. Run the narrow relevant checks and preserve evidence that the verification fails for the expected reason—not due to syntax, environment, or unrelated failures. Commit with a TDD-focused message and push only `HEAD:refs/heads/$BRANCH`.
 
+Before writing or running tests, bootstrap the test toolchain needed for the current context. Detect what the repo expects first, then install or enable only the missing tools that are required for the current step. Treat runner, container, and sub-workflow contexts as potentially different: do not assume a tool installed in one job is available in another. If a required tool cannot be installed, stop and report the missing dependency explicitly rather than silently skipping the check.
+
 Before committing, inspect `git diff --name-only` and fail fast if any new file or edited path is not required by the approved spec or your minimal test plan. If a docs test introduces extra scaffolding, remove it and retry with a narrower test.
 
 Publish `<!-- tests-created -->` with:

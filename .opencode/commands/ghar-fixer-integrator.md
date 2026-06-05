@@ -29,6 +29,8 @@ Require `spec-approved`, `review-findings`, `redteam-findings`, and `failure-cla
 
 Production code and documentation may be changed. A small test correction is allowed only when the classifier/review evidence proves the test is wrong; explain it explicitly. Never remove, skip, or weaken a valid test. Run narrow verification and the feasible full suite, commit integrated changes if any, and push only `HEAD:refs/heads/$BRANCH`.
 
+Before verification, bootstrap the tools needed for the checks you are about to run. Detect the repo’s test or validation expectations first, then install or enable only the missing tools required in this job’s context. Treat earlier sub-workflow environments as unrelated; a tool available to the test agent is not guaranteed to exist here. If a tool is missing and cannot be installed, record that limitation explicitly instead of replacing the check with a weaker one.
+
 Publish `<!-- fixer-summary -->` with:
 
 1. `# Fixer / Integrator Summary`

@@ -29,6 +29,8 @@ Require `spec-approved` and `tests-created`. Fetch and check out the shared bran
 
 Modify production files only. Do not edit tests, fixtures, snapshots, or the spec. Run narrow tests and broader relevant checks. Before committing, compare changed paths against the test commit and verify this commit adds no test-file changes. Commit production changes and push only `HEAD:refs/heads/$BRANCH`.
 
+Before running checks, bootstrap the toolchain needed for this step. Detect the repo’s required test and validation commands first, then install or enable only the missing tools needed to execute them in the current context. Assume sub-workflows and runner environments may differ from earlier jobs. If a required tool cannot be made available, report the missing dependency clearly and do not substitute a weaker check unless the spec explicitly allows it.
+
 Publish `<!-- implementation-done -->` with:
 
 1. `# Implementation Complete`
