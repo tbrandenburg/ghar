@@ -22,10 +22,25 @@ BASE_URL = https://raw.githubusercontent.com/$(SOURCE_REPO)/$(SOURCE_BRANCH)
 # Files to install (local_path:description)
 GHAR_FILES = \
 	.github/workflows/core-opencode-run.yml:OpenCode_runner \
+	.github/workflows/ghar-multi-agent-tdd-issue-resolution.yml:Multi-agent_TDD_issue_resolution_workflow \
 	.github/workflows/ghar-daily-routine.yml:Daily_routine_workflow \
 	.github/workflows/ghar-issue-opened.yml:Auto_issue_investigation_workflow \
 	.github/workflows/ghar-issue-command-executor.yml:Issue_comment_command_executor \
 	.github/workflows/ghar-issue-commands-list.yml:Issue_commands_lister \
+	.opencode/commands/ghar-planner-requirements.md:Requirements_planner_command \
+	.opencode/commands/ghar-planner-architecture.md:Architecture_planner_command \
+	.opencode/commands/ghar-planner-risks.md:Risk_planner_command \
+	.opencode/commands/ghar-spec-synthesizer.md:Spec_synthesizer_command \
+	.opencode/commands/ghar-tdd-reviewer.md:TDD_reviewer_command \
+	.opencode/commands/ghar-spec-finalizer.md:Spec_finalizer_command \
+	.opencode/commands/ghar-test-agent.md:Test_agent_command \
+	.opencode/commands/ghar-implementer.md:Implementer_command \
+	.opencode/commands/ghar-reviewer.md:Independent_reviewer_command \
+	.opencode/commands/ghar-redteam.md:Red_team_command \
+	.opencode/commands/ghar-ci-agent.md:CI_evidence_agent_command \
+	.opencode/commands/ghar-failure-classifier.md:Failure_classifier_command \
+	.opencode/commands/ghar-fixer-integrator.md:Fixer_integrator_command \
+	.opencode/commands/ghar-pr-finalizer.md:PR_finalizer_command \
 	.opencode/commands/ghar-stale-check.md:Stale_check_command \
 	.opencode/commands/ghar-issue-investigate.md:Issue_investigation_command \
 	.opencode/commands/ghar-issue-fix.md:Issue_fix_command \
