@@ -1,0 +1,323 @@
+---
+name: GHAR Autonomous Pipeline Alpha
+
+'on':
+  workflow_dispatch:
+
+jobs:
+  evidence-collector:
+    name: "1. Evidence Collector"
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: evidence-collector-alpha
+      prompt: Collect issue facts and produce GHAR:EVIDENCE
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  plan-conservative:
+    name: "2A. Plan: Conservative"
+    needs: evidence-collector
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: plan-conservative-alpha
+      prompt: Produce GHAR:PLAN conservative
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  plan-maintainer:
+    name: "2B. Plan: Maintainer"
+    needs: evidence-collector
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: plan-maintainer-alpha
+      prompt: Produce GHAR:PLAN maintainer
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  plan-robust:
+    name: "2C. Plan: Robust"
+    needs: evidence-collector
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: plan-robust-alpha
+      prompt: Produce GHAR:PLAN robust
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  plan-judge:
+    name: "3. Plan Judge"
+    needs:
+      - plan-conservative
+      - plan-maintainer
+      - plan-robust
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: plan-judge-alpha
+      prompt: Produce GHAR:PLAN_FINAL
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  seed-pr-writer:
+    name: "4. Seed PR Writer"
+    needs: plan-judge
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: seed-pr-writer-alpha
+      prompt: Create draft PR and GHAR:SEED_PR
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  pr-digest:
+    name: "5. PR Digest"
+    needs: seed-pr-writer
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: pr-digest-alpha
+      prompt: Analyze seed PR and create GHAR:PR_DIGEST
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  variant-minimal:
+    name: "6A. Variant Review: Minimal"
+    needs: pr-digest
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: variant-minimal-alpha
+      prompt: Produce GHAR:VARIANT_MINIMAL
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  variant-robust:
+    name: "6B. Variant Review: Robustness"
+    needs: pr-digest
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: variant-robust-alpha
+      prompt: Produce GHAR:VARIANT_ROBUST
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  variant-maintainer:
+    name: "6C. Variant Review: Maintainer"
+    needs: pr-digest
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: variant-maintainer-alpha
+      prompt: Produce GHAR:VARIANT_MAINTAINER
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  variant-tests:
+    name: "6D. Variant Review: Tests"
+    needs: pr-digest
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: variant-tests-alpha
+      prompt: Produce GHAR:VARIANT_TESTS
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  improvement-bundle:
+    name: "7. Improvement Bundle"
+    needs:
+      - variant-minimal
+      - variant-robust
+      - variant-maintainer
+      - variant-tests
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: improvement-bundle-alpha
+      prompt: Produce GHAR:IMPROVEMENTS
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  pr-improver:
+    name: "8. PR Improver"
+    needs: improvement-bundle
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: pr-improver-alpha
+      prompt: Apply improvements to PR
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  review-tests:
+    name: "9A. Final Review: Tests"
+    needs: pr-improver
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: review-tests-alpha
+      prompt: Produce GHAR:REVIEW_TESTS
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  review-architecture:
+    name: "9B. Final Review: Architecture"
+    needs: pr-improver
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: review-architecture-alpha
+      prompt: Produce GHAR:REVIEW_ARCH
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  review-risk:
+    name: "9C. Final Review: Risk"
+    needs: pr-improver
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: review-risk-alpha
+      prompt: Produce GHAR:REVIEW_RISK
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  pr-polish:
+    name: "10. PR Polish"
+    needs:
+      - review-tests
+      - review-architecture
+      - review-risk
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: pr-polish-alpha
+      prompt: Produce GHAR:PR_FINAL
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  ci-agent:
+    name: "11. CI Agent: Get Green"
+    needs: pr-polish
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: ci-agent-alpha
+      prompt: Fix CI failures until green
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  merge-conflict-agent:
+    name: "12. Merge Conflict Agent"
+    needs: ci-agent
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: merge-conflict-agent-alpha
+      prompt: Resolve merge conflicts and re-run checks
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  self-review:
+    name: "13. Self Review & Approval"
+    needs: merge-conflict-agent
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: self-review-alpha
+      prompt: Review final diff and approve
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  merge-pr:
+    name: "14. Merge PR"
+    needs: self-review
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: merge-pr-alpha
+      prompt: Merge pull request
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
+  post-merge-report:
+    name: "15. Post Merge Report"
+    needs: merge-pr
+    uses: ./.github/workflows/core-opencode-run.yml
+    with:
+      run-name: post-merge-report-alpha
+      prompt: Post final GHAR:DONE report
+      timeout-minutes: 30
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    secrets: inherit
