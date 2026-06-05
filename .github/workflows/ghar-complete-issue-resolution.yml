@@ -1,0 +1,169 @@
+---
+name: GHAR Autonomous Pipeline
+
+'on':
+  workflow_dispatch:
+
+jobs:
+  evidence-collector:
+    name: "1. Evidence Collector"
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Collect issue facts and produce GHAR:EVIDENCE"
+
+  plan-conservative:
+    name: "2A. Plan: Conservative"
+    needs: evidence-collector
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Produce GHAR:PLAN conservative"
+
+  plan-maintainer:
+    name: "2B. Plan: Maintainer"
+    needs: evidence-collector
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Produce GHAR:PLAN maintainer"
+
+  plan-robust:
+    name: "2C. Plan: Robust"
+    needs: evidence-collector
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Produce GHAR:PLAN robust"
+
+  plan-judge:
+    name: "3. Plan Judge"
+    runs-on: ubuntu-latest
+    needs:
+      - plan-conservative
+      - plan-maintainer
+      - plan-robust
+    steps:
+      - run: echo "Produce GHAR:PLAN_FINAL"
+
+  seed-pr-writer:
+    name: "4. Seed PR Writer"
+    runs-on: ubuntu-latest
+    needs: plan-judge
+    steps:
+      - run: echo "Create draft PR and GHAR:SEED_PR"
+
+  pr-digest:
+    name: "5. PR Digest"
+    runs-on: ubuntu-latest
+    needs: seed-pr-writer
+    steps:
+      - run: echo "Analyze seed PR and create GHAR:PR_DIGEST"
+
+  variant-minimal:
+    name: "6A. Variant Review: Minimal"
+    runs-on: ubuntu-latest
+    needs: pr-digest
+    steps:
+      - run: echo "Produce GHAR:VARIANT_MINIMAL"
+
+  variant-robust:
+    name: "6B. Variant Review: Robustness"
+    runs-on: ubuntu-latest
+    needs: pr-digest
+    steps:
+      - run: echo "Produce GHAR:VARIANT_ROBUST"
+
+  variant-maintainer:
+    name: "6C. Variant Review: Maintainer"
+    runs-on: ubuntu-latest
+    needs: pr-digest
+    steps:
+      - run: echo "Produce GHAR:VARIANT_MAINTAINER"
+
+  variant-tests:
+    name: "6D. Variant Review: Tests"
+    runs-on: ubuntu-latest
+    needs: pr-digest
+    steps:
+      - run: echo "Produce GHAR:VARIANT_TESTS"
+
+  improvement-bundle:
+    name: "7. Improvement Bundle"
+    runs-on: ubuntu-latest
+    needs:
+      - variant-minimal
+      - variant-robust
+      - variant-maintainer
+      - variant-tests
+    steps:
+      - run: echo "Produce GHAR:IMPROVEMENTS"
+
+  pr-improver:
+    name: "8. PR Improver"
+    runs-on: ubuntu-latest
+    needs: improvement-bundle
+    steps:
+      - run: echo "Apply improvements to PR"
+
+  review-tests:
+    name: "9A. Final Review: Tests"
+    runs-on: ubuntu-latest
+    needs: pr-improver
+    steps:
+      - run: echo "Produce GHAR:REVIEW_TESTS"
+
+  review-architecture:
+    name: "9B. Final Review: Architecture"
+    runs-on: ubuntu-latest
+    needs: pr-improver
+    steps:
+      - run: echo "Produce GHAR:REVIEW_ARCH"
+
+  review-risk:
+    name: "9C. Final Review: Risk"
+    runs-on: ubuntu-latest
+    needs: pr-improver
+    steps:
+      - run: echo "Produce GHAR:REVIEW_RISK"
+
+  pr-polish:
+    name: "10. PR Polish"
+    runs-on: ubuntu-latest
+    needs:
+      - review-tests
+      - review-architecture
+      - review-risk
+    steps:
+      - run: echo "Produce GHAR:PR_FINAL"
+
+  ci-agent:
+    name: "11. CI Agent: Get Green"
+    runs-on: ubuntu-latest
+    needs: pr-polish
+    steps:
+      - run: echo "Fix CI failures until green"
+
+  merge-conflict-agent:
+    name: "12. Merge Conflict Agent"
+    runs-on: ubuntu-latest
+    needs: ci-agent
+    steps:
+      - run: echo "Resolve merge conflicts and re-run checks"
+
+  self-review:
+    name: "13. Self Review & Approval"
+    runs-on: ubuntu-latest
+    needs: merge-conflict-agent
+    steps:
+      - run: echo "Review final diff and approve"
+
+  merge-pr:
+    name: "14. Merge PR"
+    runs-on: ubuntu-latest
+    needs: self-review
+    steps:
+      - run: echo "Merge pull request"
+
+  post-merge-report:
+    name: "15. Post Merge Report"
+    runs-on: ubuntu-latest
+    needs: merge-pr
+    steps:
+      - run: echo "Post final GHAR:DONE report"
