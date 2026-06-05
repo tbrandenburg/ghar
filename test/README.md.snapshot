@@ -1,17 +1,17 @@
 # GHAR - Github Agent Routines
 
-Agent routines in GitHub workflows
+Agent routines in Github workflows
 
 ## ⚡ Quick Install
 
 ```bash
-# Standard install
+# One-liner installation
 curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install
 
-# Force reinstall
+# One-liner force installation
 curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install-force
 
-# Commit and push
+# Commit and push the changes
 git add .github .opencode && git commit -m "feat: Add GHAR auto-routine"
 git push
 ```
