@@ -1,13 +1,18 @@
 ---
 description: Classify CI failures and route evidence-based repairs
+argument-hint: <issue-number-and-ci-report>
 ---
 
 # Failure Classifier
 
+**Input**: $ARGUMENTS
+
+---
+
 
 ## Runtime Contract
 
-The runtime input contains the GitHub issue number. Set `ISSUE_NUMBER` to that numeric value and set:
+The first line of `$ARGUMENTS` identifies the GitHub issue number; the remaining text may contain the CI-agent report. Extract the numeric issue number into `ISSUE_NUMBER` and set:
 
 ```bash
 BRANCH="agent/issue-${ISSUE_NUMBER}-implementation"

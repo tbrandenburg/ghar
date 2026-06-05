@@ -56,7 +56,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: planner-requirements
-      prompt-file: .opencode/commands/ghar-planner-requirements.md
+      command: ghar-planner-requirements
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
     permissions: {contents: read, issues: write, pull-requests: write}
@@ -68,7 +68,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: planner-architecture
-      prompt-file: .opencode/commands/ghar-planner-architecture.md
+      command: ghar-planner-architecture
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
     permissions: {contents: read, issues: write, pull-requests: write}
@@ -80,7 +80,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: planner-risks
-      prompt-file: .opencode/commands/ghar-planner-risks.md
+      command: ghar-planner-risks
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
     permissions: {contents: read, issues: write, pull-requests: write}
@@ -92,7 +92,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: spec-synthesizer
-      prompt-file: .opencode/commands/ghar-spec-synthesizer.md
+      command: ghar-spec-synthesizer
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
     permissions: {contents: read, issues: write, pull-requests: write}
@@ -104,7 +104,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: tdd-reviewer
-      prompt-file: .opencode/commands/ghar-tdd-reviewer.md
+      command: ghar-tdd-reviewer
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
     permissions: {contents: read, issues: write, pull-requests: write}
@@ -116,7 +116,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: spec-finalizer
-      prompt-file: .opencode/commands/ghar-spec-finalizer.md
+      command: ghar-spec-finalizer
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
     permissions: {contents: read, issues: write, pull-requests: write}
@@ -128,7 +128,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: test-agent
-      prompt-file: .opencode/commands/ghar-test-agent.md
+      command: ghar-test-agent
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 45
     permissions: {contents: write, issues: write, pull-requests: write}
@@ -140,7 +140,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: implementer
-      prompt-file: .opencode/commands/ghar-implementer.md
+      command: ghar-implementer
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
     permissions: {contents: write, issues: write, pull-requests: write}
@@ -152,7 +152,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: reviewer
-      prompt-file: .opencode/commands/ghar-reviewer.md
+      command: ghar-reviewer
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
     permissions: {contents: read, issues: write, pull-requests: write}
@@ -164,7 +164,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: redteam
-      prompt-file: .opencode/commands/ghar-redteam.md
+      command: ghar-redteam
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 45
     permissions: {contents: write, issues: write, pull-requests: write}
@@ -176,7 +176,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: ci-agent
-      prompt-file: .opencode/commands/ghar-ci-agent.md
+      command: ghar-ci-agent
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
     permissions: {actions: read, checks: read, contents: read, issues: read, pull-requests: read}
@@ -189,7 +189,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: failure-classifier
-      prompt-file: .opencode/commands/ghar-failure-classifier.md
+      command: ghar-failure-classifier
       prompt: |
         Issue number: ${{ inputs.issue_number }}
         CI agent job result: ${{ needs.ci-agent.result }}
@@ -205,7 +205,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: fixer-integrator
-      prompt-file: .opencode/commands/ghar-fixer-integrator.md
+      command: ghar-fixer-integrator
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
     permissions: {actions: read, checks: read, contents: write, issues: write, pull-requests: write}
@@ -217,7 +217,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: pr-finalizer
-      prompt-file: .opencode/commands/ghar-pr-finalizer.md
+      command: ghar-pr-finalizer
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
     permissions: {actions: read, checks: read, contents: read, issues: write, pull-requests: write}

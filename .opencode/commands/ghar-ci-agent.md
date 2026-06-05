@@ -1,13 +1,18 @@
 ---
 description: Run repository-native CI checks and return an evidence report
+argument-hint: <issue-number>
 ---
 
 # CI Evidence Agent
 
+**Input**: $ARGUMENTS
+
+---
+
 
 ## Runtime Contract
 
-The runtime input contains the GitHub issue number. Set `ISSUE_NUMBER` to that numeric value and set:
+Extract the GitHub issue number from `$ARGUMENTS`. Set `ISSUE_NUMBER` to that numeric value and set:
 
 ```bash
 BRANCH="agent/issue-${ISSUE_NUMBER}-implementation"

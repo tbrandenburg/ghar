@@ -1,13 +1,18 @@
 ---
 description: Create and commit failing tests from the approved spec
+argument-hint: <issue-number>
 ---
 
 # Test Agent
 
+**Input**: $ARGUMENTS
+
+---
+
 
 ## Runtime Contract
 
-The runtime input contains the GitHub issue number. Set `ISSUE_NUMBER` to that numeric value and set:
+Extract the GitHub issue number from `$ARGUMENTS`. Set `ISSUE_NUMBER` to that numeric value and set:
 
 ```bash
 BRANCH="agent/issue-${ISSUE_NUMBER}-implementation"

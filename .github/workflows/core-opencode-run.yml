@@ -8,11 +8,11 @@ on:
         required: true
         type: string
       prompt:
-        description: 'Runtime prompt content; appended to prompt-file when both are provided'
+        description: 'The prompt content to use for the run (mutually exclusive with prompt-file)'
         required: false
         type: string
       prompt-file:
-        description: 'Path to the base prompt file; runtime prompt content is appended when provided'
+        description: 'Path to the prompt file (e.g., .github/prompts/security.prompt.md) (mutually exclusive with prompt)'
         required: false
         type: string
       timeout-minutes:
@@ -110,57 +110,25 @@ jobs:
             fi
           fi
 
-      - name: Build prompt
-        id: prompt
-        env:
-          PROMPT_FILE: ${{ inputs.prompt-file }}
-          RUNTIME_PROMPT: ${{ inputs.prompt }}
+      - name: Run OpenCode ${{ inputs.run-name }}
         run: |
-          if [ -z "$PROMPT_FILE" ] && [ -z "$RUNTIME_PROMPT" ]; then
-            if [ -n "${{ inputs.command }}" ]; then
-              exit 0
+          if [ -n "${{ inputs.command }}" ]; then
+            if [ -n "${{ inputs.prompt }}" ]; then
+              echo "${{ inputs.prompt }}" | env -i PATH="$HOME/.opencode/bin:$PATH" HOME="$HOME" GH_TOKEN="$GH_TOKEN" opencode run --command "${{ inputs.command }}" --model "${{ inputs.model }}" --agent "${{ inputs.agent }}" > ${{ inputs.run-name }}-results.txt
+            elif [ -n "${{ inputs.prompt-file }}" ]; then
+              PROMPT=$(cat ${{ inputs.prompt-file }})
+              echo "$PROMPT" | env -i PATH="$HOME/.opencode/bin:$PATH" HOME="$HOME" GH_TOKEN="$GH_TOKEN" opencode run --command "${{ inputs.command }}" --model "${{ inputs.model }}" --agent "${{ inputs.agent }}" > ${{ inputs.run-name }}-results.txt
+            else
+              env -i PATH="$HOME/.opencode/bin:$PATH" HOME="$HOME" GH_TOKEN="$GH_TOKEN" opencode run --command "${{ inputs.command }}" --model "${{ inputs.model }}" --agent "${{ inputs.agent }}" > ${{ inputs.run-name }}-results.txt
             fi
+          elif [ -n "${{ inputs.prompt }}" ]; then
+            echo "${{ inputs.prompt }}" | env -i PATH="$HOME/.opencode/bin:$PATH" HOME="$HOME" GH_TOKEN="$GH_TOKEN" opencode run --model "${{ inputs.model }}" --agent "${{ inputs.agent }}" > ${{ inputs.run-name }}-results.txt
+          elif [ -n "${{ inputs.prompt-file }}" ]; then
+            PROMPT=$(cat ${{ inputs.prompt-file }})
+            echo "$PROMPT" | env -i PATH="$HOME/.opencode/bin:$PATH" HOME="$HOME" GH_TOKEN="$GH_TOKEN" opencode run --model "${{ inputs.model }}" --agent "${{ inputs.agent }}" > ${{ inputs.run-name }}-results.txt
+          else
             echo "Error: At least one of 'command', 'prompt', or 'prompt-file' must be provided" >&2
             exit 1
-          fi
-
-          : > "$RUNNER_TEMP/opencode-prompt.txt"
-          if [ -n "$PROMPT_FILE" ]; then
-            if [ ! -f "$PROMPT_FILE" ]; then
-              echo "Error: Prompt file not found: $PROMPT_FILE" >&2
-              exit 1
-            fi
-            cat "$PROMPT_FILE" >> "$RUNNER_TEMP/opencode-prompt.txt"
-          fi
-          if [ -n "$PROMPT_FILE" ] && [ -n "$RUNTIME_PROMPT" ]; then
-            printf '\n\n## Runtime Input\n\n' >> "$RUNNER_TEMP/opencode-prompt.txt"
-          fi
-          if [ -n "$RUNTIME_PROMPT" ]; then
-            printf '%s\n' "$RUNTIME_PROMPT" >> "$RUNNER_TEMP/opencode-prompt.txt"
-          fi
-          echo "has-prompt=true" >> "$GITHUB_OUTPUT"
-
-      - name: Run OpenCode ${{ inputs.run-name }}
-        env:
-          OPENCODE_COMMAND: ${{ inputs.command }}
-          OPENCODE_MODEL: ${{ inputs.model }}
-          OPENCODE_AGENT: ${{ inputs.agent }}
-          RESULTS_FILE: ${{ inputs.run-name }}-results.txt
-        run: |
-          if [ "${{ steps.prompt.outputs.has-prompt }}" = "true" ]; then
-            if [ -n "$OPENCODE_COMMAND" ]; then
-              env -i PATH="$HOME/.opencode/bin:$PATH" HOME="$HOME" GH_TOKEN="$GH_TOKEN" \
-                opencode run --command "$OPENCODE_COMMAND" --model "$OPENCODE_MODEL" --agent "$OPENCODE_AGENT" \
-                < "$RUNNER_TEMP/opencode-prompt.txt" > "$RESULTS_FILE"
-            else
-              env -i PATH="$HOME/.opencode/bin:$PATH" HOME="$HOME" GH_TOKEN="$GH_TOKEN" \
-                opencode run --model "$OPENCODE_MODEL" --agent "$OPENCODE_AGENT" \
-                < "$RUNNER_TEMP/opencode-prompt.txt" > "$RESULTS_FILE"
-            fi
-          else
-            env -i PATH="$HOME/.opencode/bin:$PATH" HOME="$HOME" GH_TOKEN="$GH_TOKEN" \
-              opencode run --command "$OPENCODE_COMMAND" --model "$OPENCODE_MODEL" --agent "$OPENCODE_AGENT" \
-              > "$RESULTS_FILE"
           fi
 
       - name: Process results for output

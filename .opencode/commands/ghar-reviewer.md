@@ -1,13 +1,18 @@
 ---
 description: Independently review implementation correctness and maintainability
+argument-hint: <issue-number>
 ---
 
 # Independent Reviewer
 
+**Input**: $ARGUMENTS
+
+---
+
 
 ## Runtime Contract
 
-The runtime input contains the GitHub issue number. Set `ISSUE_NUMBER` to that numeric value and set:
+Extract the GitHub issue number from `$ARGUMENTS`. Set `ISSUE_NUMBER` to that numeric value and set:
 
 ```bash
 BRANCH="agent/issue-${ISSUE_NUMBER}-implementation"
