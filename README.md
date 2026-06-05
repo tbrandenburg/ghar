@@ -1,6 +1,6 @@
-# GHAR - Github Agent Routines
+# GHAR - GitHub Agent Routines
 
-Agent routines in Github workflows
+Automated agent routines for GitHub workflows
 
 ## ⚡ Quick Install
 
