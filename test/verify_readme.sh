@@ -53,12 +53,12 @@ else
   fail "I2: Expected 1–4 changed lines, got $changed_lines"
 fi
 
-# I3 / AC8 — No whitespace-only drift
+# I3 / AC8 — Content change verified (not whitespace-only)
 ws_diff=$(git diff --ignore-all-space "$BASELINE"..HEAD -- "$README")
-if [ -z "$ws_diff" ]; then
-  pass "I3: No whitespace-only drift"
+if [ -n "$ws_diff" ]; then
+  pass "I3: Content change verified — diff after ignoring whitespace is non-empty"
 else
-  fail "I3: Whitespace drift detected — run git diff --ignore-all-space to inspect"
+  fail "I3: No content change — diff is whitespace-only (git diff --ignore-all-space is empty)"
 fi
 
 # I4 / AC3 — No whitespace-only hunks
@@ -118,6 +118,29 @@ if grep -q 'Automated agent routines for GitHub workflows' "$README"; then
   pass "N3: Subtitle regression check — 'Automated agent routines for GitHub workflows' still present"
 else
   fail "N3: Subtitle regression — expected phrasing was reverted"
+fi
+
+# ---------------------------------------------------------------------------
+# Adversarial tests
+# ---------------------------------------------------------------------------
+
+# A1 — Only lines 1 and 3 are modified in README.md
+hunk_start_lines=$(git diff --unified=0 "$BASELINE"..HEAD -- "$README" |
+  grep '^@@' | sed 's/@@ -\([0-9]\+\).*/\1/')
+expected_hunks="1
+3"
+if [ "$hunk_start_lines" = "$expected_hunks" ]; then
+  pass "A1: Only lines 1 and 3 are modified in README.md"
+else
+  fail "A1: Expected modifications only on lines 1 and 3, got: $(echo "$hunk_start_lines" | tr '\n' ' ')"
+fi
+
+# A2 — No trailing whitespace on any diff line in README.md
+trailing_ws=$(git diff "$BASELINE"..HEAD -- "$README" | grep -n '^[+-].*[[:space:]]$' || true)
+if [ -z "$trailing_ws" ]; then
+  pass "A2: No trailing whitespace in README.md diff hunks"
+else
+  fail "A2: Trailing whitespace found in README.md diff: $(echo "$trailing_ws" | tr '\n' ';')"
 fi
 
 echo ""
