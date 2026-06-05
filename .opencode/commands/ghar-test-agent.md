@@ -34,9 +34,9 @@ Classify the work before writing tests:
 - `config`: workflow, tool, or repo configuration changes
 - `infra`: CI, release, or automation plumbing
 
-For `docs` work, keep TDD lightweight and contract-level: test the visible text outcome, prefer direct string assertions over snapshot harnesses, and do not add snapshot files or multi-file scaffolds unless the approved spec explicitly requires them or the document is structurally unstable and you can justify that in the artifact. The default expectation is one focused test file, no fixture explosion, and no implementation-adjacent helpers.
+For `docs` work, keep TDD lightweight and contract-level: verify the visible text outcome with the smallest possible mechanism, and default to **no new test files** unless the approved spec explicitly asks for tests or the spec clearly cannot be validated without one. Prefer direct diff checks and simple assertions inside the existing workflow artifacts over snapshot harnesses. Do not add snapshot files or multi-file scaffolds unless the approved spec explicitly requires them or the document is structurally unstable and you can justify that in the artifact.
 
-Before editing, record the baseline changed-file list. Modify only test files, fixtures, snapshots, and test-only helpers. Run the narrow relevant tests and preserve evidence that the new tests fail for the expected reason—not due to syntax, environment, or unrelated failures. Commit with a TDD-focused message and push only `HEAD:refs/heads/$BRANCH`.
+Before editing, record the baseline changed-file list. Modify only files required by the approved spec and minimal verification. For docs work, prefer changing only the target prose file; if a test file is truly needed, justify it in the artifact and keep it singular and small. Run the narrow relevant checks and preserve evidence that the verification fails for the expected reason—not due to syntax, environment, or unrelated failures. Commit with a TDD-focused message and push only `HEAD:refs/heads/$BRANCH`.
 
 Before committing, inspect `git diff --name-only` and fail fast if any new file or edited path is not required by the approved spec or your minimal test plan. If a docs test introduces extra scaffolding, remove it and retry with a narrower test.
 
