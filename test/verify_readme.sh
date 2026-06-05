@@ -48,10 +48,10 @@ check_grep "AC4 — Comment 3 is '# Commit and push'" '# Commit and push'
 # AC5: Zero incidental changes — exactly 4 lines differ from snapshot
 if [ -f "$SNAPSHOT" ]; then
     diff_lines=$(diff "$SNAPSHOT" "$README" 2>/dev/null | grep -c '^[<>]' || true)
-    if [ "$diff_lines" -eq 4 ]; then
-        pass "AC5 — Exactly 4 lines differ from snapshot"
+    if [ "$diff_lines" -eq 8 ]; then
+        pass "AC5 — Exactly 8 diff lines (4 changes) from snapshot"
     else
-        echo "FAIL: AC5 — Expected 4 differing lines from snapshot, got $diff_lines"
+        echo "FAIL: AC5 — Expected 8 diff lines (4 changes) from snapshot, got $diff_lines"
         diff "$SNAPSHOT" "$README" 2>/dev/null || true
         FAILED=1
     fi
@@ -59,6 +59,24 @@ else
     echo "FAIL: AC5 — Snapshot file not found at $SNAPSHOT"
     FAILED=1
 fi
+
+# RT-1 (adversarial): No trailing whitespace on critical lines
+check_no_trailing_ws() {
+    local label="$1" line_nr="$2"
+    local raw trimmed
+    raw=$(sed -n "${line_nr}p" "$README")
+    trimmed=$(printf '%s' "$raw" | sed 's/[[:space:]]*$//')
+    if [ "$raw" = "$trimmed" ]; then
+        pass "$label"
+    else
+        echo "FAIL: $label — line $line_nr has trailing whitespace"
+        FAILED=1
+    fi
+}
+check_no_trailing_ws "RT-1a — No trailing ws on subtitle (line 3)" 3
+check_no_trailing_ws "RT-1b — No trailing ws on comment 1 (line 8)" 8
+check_no_trailing_ws "RT-1c — No trailing ws on comment 2 (line 11)" 11
+check_no_trailing_ws "RT-1d — No trailing ws on comment 3 (line 14)" 14
 
 # AC7-N1 (negative): H1 must remain unchanged
 check_count 'AC7-N1 — H1 unchanged (count = 1)' '^# GHAR - Github Agent Routines' 1
