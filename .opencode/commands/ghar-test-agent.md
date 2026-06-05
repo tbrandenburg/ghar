@@ -27,7 +27,18 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 Require the `spec-approved` artifact. Fetch and check out the shared branch with `git fetch origin "$BRANCH"` and `git checkout -B "$BRANCH" "origin/$BRANCH"`. Inspect existing tests, then encode the approved acceptance criteria as the smallest deterministic set of tests that fail for the intended missing behavior.
 
+Classify the work before writing tests:
+
+- `docs`: README, docs, comments, changelog, or other prose-only updates
+- `code`: runtime behavior changes
+- `config`: workflow, tool, or repo configuration changes
+- `infra`: CI, release, or automation plumbing
+
+For `docs` work, keep TDD lightweight and contract-level: test the visible text outcome, prefer direct string assertions over snapshot harnesses, and do not add snapshot files or multi-file scaffolds unless the approved spec explicitly requires them or the document is structurally unstable and you can justify that in the artifact. The default expectation is one focused test file, no fixture explosion, and no implementation-adjacent helpers.
+
 Before editing, record the baseline changed-file list. Modify only test files, fixtures, snapshots, and test-only helpers. Run the narrow relevant tests and preserve evidence that the new tests fail for the expected reason—not due to syntax, environment, or unrelated failures. Commit with a TDD-focused message and push only `HEAD:refs/heads/$BRANCH`.
+
+Before committing, inspect `git diff --name-only` and fail fast if any new file or edited path is not required by the approved spec or your minimal test plan. If a docs test introduces extra scaffolding, remove it and retry with a narrower test.
 
 Publish `<!-- tests-created -->` with:
 
