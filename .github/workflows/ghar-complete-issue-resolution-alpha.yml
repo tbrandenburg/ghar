@@ -10,7 +10,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: evidence-collector-alpha
-      prompt: Collect issue facts and produce GHAR:EVIDENCE
+      prompt: "Echo exactly: Collect issue facts and produce GHAR:EVIDENCE"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -24,7 +24,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: plan-conservative-alpha
-      prompt: Produce GHAR:PLAN conservative
+      prompt: "Echo exactly: Produce GHAR:PLAN conservative"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -38,7 +38,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: plan-maintainer-alpha
-      prompt: Produce GHAR:PLAN maintainer
+      prompt: "Echo exactly: Produce GHAR:PLAN maintainer"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -52,7 +52,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: plan-robust-alpha
-      prompt: Produce GHAR:PLAN robust
+      prompt: "Echo exactly: Produce GHAR:PLAN robust"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -69,7 +69,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: plan-judge-alpha
-      prompt: Produce GHAR:PLAN_FINAL
+      prompt: "Echo exactly: Produce GHAR:PLAN_FINAL"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -83,7 +83,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: seed-pr-writer-alpha
-      prompt: Create draft PR and GHAR:SEED_PR
+      prompt: "Echo exactly: Create draft PR and GHAR:SEED_PR"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -97,7 +97,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: pr-digest-alpha
-      prompt: Analyze seed PR and create GHAR:PR_DIGEST
+      prompt: "Echo exactly: Analyze seed PR and create GHAR:PR_DIGEST"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -111,7 +111,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: variant-minimal-alpha
-      prompt: Produce GHAR:VARIANT_MINIMAL
+      prompt: "Echo exactly: Produce GHAR:VARIANT_MINIMAL"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -125,7 +125,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: variant-robust-alpha
-      prompt: Produce GHAR:VARIANT_ROBUST
+      prompt: "Echo exactly: Produce GHAR:VARIANT_ROBUST"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -139,7 +139,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: variant-maintainer-alpha
-      prompt: Produce GHAR:VARIANT_MAINTAINER
+      prompt: "Echo exactly: Produce GHAR:VARIANT_MAINTAINER"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -153,7 +153,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: variant-tests-alpha
-      prompt: Produce GHAR:VARIANT_TESTS
+      prompt: "Echo exactly: Produce GHAR:VARIANT_TESTS"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -171,7 +171,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: improvement-bundle-alpha
-      prompt: Produce GHAR:IMPROVEMENTS
+      prompt: "Echo exactly: Produce GHAR:IMPROVEMENTS"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -185,7 +185,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: pr-improver-alpha
-      prompt: Apply improvements to PR
+      prompt: "Echo exactly: Apply improvements to PR"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -199,7 +199,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: review-tests-alpha
-      prompt: Produce GHAR:REVIEW_TESTS
+      prompt: "Echo exactly: Produce GHAR:REVIEW_TESTS"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -213,7 +213,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: review-architecture-alpha
-      prompt: Produce GHAR:REVIEW_ARCH
+      prompt: "Echo exactly: Produce GHAR:REVIEW_ARCH"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -227,7 +227,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: review-risk-alpha
-      prompt: Produce GHAR:REVIEW_RISK
+      prompt: "Echo exactly: Produce GHAR:REVIEW_RISK"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -244,7 +244,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: pr-polish-alpha
-      prompt: Produce GHAR:PR_FINAL
+      prompt: "Echo exactly: Produce GHAR:PR_FINAL"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -258,7 +258,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: ci-agent-alpha
-      prompt: Fix CI failures until green
+      prompt: "Echo exactly: Fix CI failures until green"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -272,7 +272,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: merge-conflict-agent-alpha
-      prompt: Resolve merge conflicts and re-run checks
+      prompt: "Echo exactly: Resolve merge conflicts and re-run checks"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -286,7 +286,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: self-review-alpha
-      prompt: Review final diff and approve
+      prompt: "Echo exactly: Review final diff and approve"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -300,7 +300,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: merge-pr-alpha
-      prompt: Merge pull request
+      prompt: "Echo exactly: Merge pull request"
       timeout-minutes: 30
     permissions:
       issues: write
@@ -314,7 +314,7 @@ jobs:
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: post-merge-report-alpha
-      prompt: Post final GHAR:DONE report
+      prompt: "Echo exactly: Post final GHAR:DONE report"
       timeout-minutes: 30
     permissions:
       issues: write
