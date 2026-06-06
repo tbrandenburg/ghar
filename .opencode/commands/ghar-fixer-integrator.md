@@ -25,7 +25,7 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 ## Mission
 
-Require `spec-approved`, `review-findings`, `redteam-findings`, and `failure-classification`. Fetch and check out the latest shared branch. Prioritize blockers, repair production defects, address credible adversarial failures, and restore repository-native checks.
+Require `spec-approved`, `implementation-redteam-findings`, `review-findings`, `redteam-findings`, and `failure-classification`. Fetch and check out the latest shared branch. Prioritize blockers, repair production defects, address credible adversarial failures, and restore repository-native checks.
 
 Own the repair loop end-to-end: after every push, re-check the latest branch head and wait for the newest CI cycle to settle. If checks are still pending, keep waiting rather than handing off early. If checks fail, classify the failure, repair it, and verify again before publishing the summary.
 
@@ -36,7 +36,7 @@ Before verification, bootstrap the tools needed for the checks you are about to 
 Publish `<!-- fixer-summary -->` with:
 
 1. `# Fixer / Integrator Summary`
-2. Finding-by-finding disposition
+2. Finding-by-finding disposition with proof and latest SHA
 3. Commit SHA(s) and files changed (or state no changes were needed)
 4. Exact verification commands and outcomes
 5. Any justified minor test correction

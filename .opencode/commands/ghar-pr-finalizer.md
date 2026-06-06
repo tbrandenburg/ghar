@@ -25,7 +25,7 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 ## Mission
 
-Require all artifacts: `spec-approved`, `tests-created`, `implementation-done`, `review-findings`, `redteam-findings`, `failure-classification`, and `fixer-summary`. Fetch the latest shared branch read-only. Compare it with the repository default branch, inspect commit order, changed files, and available checks.
+Require all artifacts: `spec-approved`, `tests-created`, `implementation-done`, `implementation-redteam-findings`, `review-findings`, `redteam-findings`, `failure-classification`, and `fixer-summary`. Fetch the latest shared branch read-only. Compare it with the repository default branch, inspect commit order, changed files, and available checks.
 
 Treat any CI state older than the latest fixer push as stale. Do not finalize if the latest branch head has pending, failing, missing, or unobserved required repository-native checks. Require the post-fix CI gate to have observed the latest terminal CI state before considering the PR ready, and report any terminal external status failures separately.
 

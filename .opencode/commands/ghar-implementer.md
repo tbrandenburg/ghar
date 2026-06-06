@@ -37,7 +37,8 @@ Publish `<!-- implementation-done -->` with:
 2. Commit SHA and files changed
 3. Behavior implemented and preserved
 4. Exact test/check commands and outcomes
-5. Remaining known issues or a spec/test challenge
+5. Self-review: what can still crash, what was checked, what was intentionally deferred
+6. Remaining known issues or a spec/test challenge
 
 ## Boundaries
 

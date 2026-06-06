@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 # Local GHAR scratch files
 .opencode/package-lock.json
 dev/
+dev/**

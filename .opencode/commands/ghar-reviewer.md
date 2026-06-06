@@ -25,7 +25,9 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 ## Mission
 
-Fetch the latest shared branch without modifying it. Read the issue plus `spec-approved`, `tests-created`, and `implementation-done`; verify all markers exist. Review the commits and diff against the repository default branch. Preserve independence: do not read `redteam-findings` even if it already exists.
+Fetch the latest shared branch without modifying it. Read the issue plus `spec-approved`, `tests-created`, and `implementation-done`; verify all markers exist. Review the commit identified by `implementation-done` and its diff against the repository default branch, not the moving branch tip. Preserve independence: do not read `redteam-findings` even if it already exists.
+
+Perform a production bug hunt: look for crashes, null/empty input failures, stale state, race conditions, and boundary-value regressions in the implementation itself, not just style or test shape.
 
 Publish `<!-- review-findings -->` with:
 
