@@ -21,6 +21,8 @@ Perform a thorough, senior-engineer-level code review:
 
 **Golden Rule**: Be constructive and actionable. Every issue should have a clear recommendation. Acknowledge good work too.
 
+Prefer the smallest correct change. Flag extra abstractions, wrappers, helper layers, or implementation-coupled tests when a simpler behavior-based alternative exists.
+
 ---
 
 ## Phase 1: FETCH - Get PR Context
@@ -208,6 +210,7 @@ For each file in the diff:
 - [ ] Is it over-engineered?
 - [ ] Is it under-engineered (missing necessary abstractions)?
 - [ ] Are there magic numbers/strings that should be constants?
+- [ ] Are tests asserting behavior instead of private implementation details when behavior is observable?
 
 ### 3.3 Categorize Issues
 

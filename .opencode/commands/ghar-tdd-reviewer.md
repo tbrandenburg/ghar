@@ -27,6 +27,9 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 Read the issue, codebase, test framework, and only the `spec-final` planning artifact. Verify its marker exists. Attack the spec from a testability perspective.
 
+Every must-have criterion must map to a runtime-observable test. Prefer behavior-level assertions over source inspection or private implementation probes whenever the behavior is observable through the public surface.
+Require at least one behavior-level test, one negative case, and one regression case for each must-have criterion where applicable. If the spec cannot support that, the spec is not ready.
+
 Publish `<!-- spec-tdd-review -->` with:
 
 1. `# TDD Spec Review`

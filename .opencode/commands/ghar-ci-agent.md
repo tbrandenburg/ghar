@@ -27,9 +27,11 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 Fetch and check out the latest shared branch read-only. Do not publish an issue artifact. Determine repository-native CI commands from workflow files, build metadata, and contributor documentation. Run the narrow relevant suite plus the feasible standard lint/type/test/build checks. Continue collecting independent failures instead of stopping after the first command.
 
+Do not treat CI as verified until the latest shared branch head has reached a terminal state. Poll GitHub check runs and status contexts for the current branch head until every required repository-native item is completed, or until you hit a clear timeout. Report terminal external status failures separately; do not imply success if anything is still pending at timeout.
+
 Before running checks, bootstrap the required toolchain for the current context. Discover what the repository expects, then install or enable only the missing tools needed for the selected commands in this job. Do not assume tools installed by another workflow step or another sub-workflow are present here. If a required tool is unavailable, report it as an environment limitation rather than skipping the check.
 
-Also inspect GitHub check runs for the shared branch or its pull request when available. Return a concise report in your final output containing:
+Also inspect GitHub check runs for the shared branch or its pull request when available, and re-check them until they stop moving. Return a concise report in your final output containing:
 
 1. Branch and tested commit SHA
 2. Every exact command run, exit status, and short relevant error excerpt
