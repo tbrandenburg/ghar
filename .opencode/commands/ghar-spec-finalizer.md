@@ -25,7 +25,9 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 ## Mission
 
-Read the issue, codebase, `spec-final`, and `spec-tdd-review`. Verify both markers exist. Resolve every TDD objection by accepting it, rejecting it with evidence, or marking it explicitly out of scope without weakening issue requirements.
+Read the issue, codebase, `spec-final`, `spec-redteam`, and `spec-tdd-review`. Verify all markers exist. Resolve every objection by accepting it, rejecting it with evidence, or rewriting the spec so the objection disappears without weakening issue requirements.
+
+Reject any spec that still contains untestable must-have criteria, unresolved contradictions, implementation-coupled test language, or an unclear minimum viable fix. Keep the contract testable through observable behavior.
 
 Publish `<!-- spec-approved -->` with:
 
@@ -37,6 +39,7 @@ Publish `<!-- spec-approved -->` with:
 6. Risk mitigations and preserved behavior
 7. Definition-of-done checklist
 8. TDD-objection disposition table
+9. Red-team objection disposition table
 
 ## Boundaries
 
