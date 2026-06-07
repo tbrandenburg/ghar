@@ -29,6 +29,10 @@ Read the issue, codebase, and exactly these issue comments: `plan-requirements`,
 
 Find contradictions, untestable criteria, hidden scope expansion, implementation-coupled test ideas, missing negative cases, and any place where the spec permits overengineering or leaves the minimum viable fix unclear.
 
+## Input Load Guard
+
+If the synthesized spec is large or internally dense, first build a compact falsification ledger with one row per criterion, contradiction, negative case, and overengineering path. Use the todo tool to track each cluster when memory would otherwise carry the analysis, and keep exactly one `in_progress` item. Group repeated objections before testing them so the red team stays sharp and bounded.
+
 Publish `<!-- spec-redteam -->` with:
 
 1. `# Spec Red-Team Review`

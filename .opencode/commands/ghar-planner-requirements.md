@@ -29,6 +29,10 @@ Read the issue body, non-agent discussion, and relevant code on the shared branc
 
 Treat UX as part of the requirement, not a follow-up: name the user-visible transition, loading, error, and stale-state behavior that must be preserved. Also capture any architecture invariants that matter for future change cost, but keep the requirements plan behavior-first and minimal.
 
+## Input Load Guard
+
+If the issue input is large, fragmented, or repetitive, first build a compact intake ledger with one row per atomic requirement, question, or behavior cluster. Use the todo tool to track each cluster when memory would be at risk, and keep exactly one `in_progress` item. Merge duplicates, group related points, and keep unresolved questions visible before drafting the plan.
+
 Publish `<!-- plan-requirements -->` with:
 
 1. `# Requirements Plan`

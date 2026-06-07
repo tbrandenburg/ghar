@@ -29,6 +29,10 @@ Read only the issue body/non-agent discussion and inspect the shared branch. Mak
 
 Bias toward user-visible regressions, stale or flashing content, race conditions, and accidental overengineering. If the proposed fix is simpler than the bug, say so; if it risks leaving the UX incomplete, say so.
 
+## Input Load Guard
+
+If the issue, comments, or related code expose many risks, first build a compact intake ledger with one row per risk cluster, edge case, or regression path. Use the todo tool to track each cluster when the input volume is high, and keep exactly one `in_progress` item. Group duplicate concerns before analysis so the risk register stays focused and falsifiable.
+
 Publish `<!-- plan-risks -->` with:
 
 1. `# Risk Plan`

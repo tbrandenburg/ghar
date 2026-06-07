@@ -29,6 +29,10 @@ Read only the issue body/non-agent discussion and inspect the shared branch. Mak
 
 Prefer the smallest design that gives one clear owner to each state transition. Call out UX-facing state flow, ownership boundaries, and places where a simpler data path avoids duplicated work or race windows. Cross-check sibling paths only to confirm the same root cause; do not include them in the fix unless the issue explicitly requires shared behavior.
 
+## Input Load Guard
+
+If the input set is large, first build a compact intake ledger covering each atomic behavior, state transition, file area, and open question. Use the todo tool to track each cluster when the analysis would otherwise depend on memory, and keep exactly one `in_progress` item. Merge repeated points before judging architecture so the plan stays small and deterministic.
+
 Publish `<!-- plan-architecture -->` with:
 
 1. `# Architecture Plan`

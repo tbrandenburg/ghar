@@ -29,6 +29,10 @@ Read the issue, codebase, and exactly these issue comments: `plan-requirements`,
 
 Build a contradiction matrix before writing the spec. Where the planner issue comments disagree, say which criterion wins and why. Make every must-have criterion observable, testable, and tied to the smallest viable code change. If a criterion cannot be observed at runtime, rewrite it or demote it out of must-have scope. Do not introduce new shared abstractions, shared guards, or cross-page state unless the issue requires them. Use `plan-research` as the source of current external references, but keep repo-native patterns and the existing codebase as the primary decision basis.
 
+## Input Load Guard
+
+Before writing the spec, build a compact synthesis ledger with one row per must-have criterion, contradiction, source cluster, and open question. Use the todo tool to track each cluster when the upstream material is dense, and keep exactly one `in_progress` item. Resolve each row as accepted, rewritten, rejected, or open so nothing depends on memory during synthesis.
+
 Publish `<!-- spec-final -->` with:
 
 1. `# Synthesized Implementation Spec`

@@ -29,6 +29,10 @@ Read the issue, the repository codebase, and the planner issue comments from pha
 
 Only after phase 2 is complete, gather real-time external intelligence that can sharpen the plan without overriding repo-native patterns. Solutions must fit the existing codebase first.
 
+## Input Load Guard
+
+If phase 2 or the external sources are dense, first build a compact intake ledger with one row per source, library, version, or open question. Use the todo tool to track each cluster when memory would be at risk, and keep exactly one `in_progress` item. Merge overlapping references before analysis so the final research notes stay current and non-redundant.
+
 Use Context7 for current documentation and version-specific references:
 
 1. Resolve exact library IDs with `context7_resolve-library-id`.

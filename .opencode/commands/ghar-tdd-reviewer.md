@@ -30,6 +30,10 @@ Read the issue, codebase, test framework, and only the `spec-final` planning iss
 Every must-have criterion must map to a runtime-observable test. Prefer behavior-level assertions over source inspection or private implementation probes whenever the behavior is observable through the public surface. Include explicit UX-state tests when the issue mentions loading, clearing, stale content, or error feedback.
 Require at least one behavior-level test, one negative case, and one regression case for each must-have criterion where applicable. If the spec cannot support that, the spec is not ready.
 
+## Input Load Guard
+
+Before judging the spec, build a compact traceability ledger with one row per must-have criterion and its behavior, negative, regression, fixture, and failure-message coverage. Use the todo tool to track each criterion cluster when the spec is large, and keep exactly one `in_progress` item. If a criterion cannot map to a runtime-observable test, mark it untestable immediately instead of carrying it in memory.
+
 Publish `<!-- spec-tdd-review -->` with:
 
 1. `# TDD Spec Review`

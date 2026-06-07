@@ -29,6 +29,10 @@ Read the issue, codebase, `spec-final`, `spec-redteam`, and `spec-tdd-review`. V
 
 Reject any spec that still contains untestable must-have criteria, unresolved contradictions, implementation-coupled test language, or an unclear minimum viable fix. Keep the contract testable through observable behavior. Preserve the simplest architecture that still satisfies the UX contract.
 
+## Input Load Guard
+
+If there are many objections or long upstream notes, first build a compact disposition ledger with one row per objection, criterion, or residual risk. Use the todo tool to track each cluster when the decision load is high, and keep exactly one `in_progress` item. Resolve each row as accepted, rejected with evidence, or rewritten away so the final spec does not rely on memory.
+
 Publish `<!-- spec-approved -->` with:
 
 1. `# Approved TDD-Ready Implementation Spec`
