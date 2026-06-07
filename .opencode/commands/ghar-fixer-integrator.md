@@ -1,5 +1,5 @@
 ---
-description: Repair and integrate reviewer, red-team, and CI findings
+description: Repair and integrate issue-focused review and CI findings
 argument-hint: <issue-number>
 ---
 
@@ -12,7 +12,7 @@ argument-hint: <issue-number>
 
 ## Runtime Contract
 
-Extract the GitHub issue number from `$ARGUMENTS`. Set `ISSUE_NUMBER` to that numeric value and set:
+The first line of `$ARGUMENTS` identifies the GitHub issue number; the remaining text may contain the CI evidence report. Extract the numeric issue number into `ISSUE_NUMBER` and set:
 
 ```bash
 BRANCH="agent/issue-${ISSUE_NUMBER}-implementation"
@@ -25,7 +25,7 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 ## Mission
 
-Require `spec-approved`, `implementation-redteam-findings`, `review-findings`, `redteam-findings`, and `failure-classification`. Fetch and check out the latest shared branch. Prioritize blockers, repair production defects, address credible adversarial failures, and restore repository-native checks.
+Require `spec-approved`, `implementation-review-findings`, `maintainer-review-findings`, `adversarial-review-findings`, `residual-gap-findings`, and `ci-evidence`. Fetch and check out the latest shared branch. Prioritize only blockers that are necessary for issue coverage and closure, repair production defects, address credible adversarial failures, and restore repository-native checks.
 
 Own the repair loop end-to-end: after every push, re-check the latest branch head and wait for the newest CI cycle to settle. If checks are still pending, keep waiting rather than handing off early. If checks fail, classify the failure, repair it, and verify again before publishing the summary.
 
@@ -39,9 +39,9 @@ Maintain the loop with the todo tool for the whole job. The todo list must conta
 6. Re-run RCA if any terminal check is red
 7. Finalize only after the latest head is green
 
-If CI is red, do not treat the job as complete. Re-enter RCA and repair until the latest head is fully green, including terminal external statuses that are visible on the PR or commit.
+If CI is red, do not treat the job as complete. Re-enter RCA using the CI evidence report and audit trail, repair until the latest head is fully green, and include terminal external statuses that are visible on the PR or commit.
 
-Production code and documentation may be changed. A small test correction is allowed only when the classifier/review evidence proves the test is wrong; explain it explicitly. Never remove, skip, or weaken a valid test. Run narrow verification and the feasible full suite, commit integrated changes if any, and push only `HEAD:refs/heads/$BRANCH`. Do not consider the fix complete until the latest branch head has terminal CI evidence for the required repository-native checks.
+Production code and documentation may be changed. A small test correction is allowed only when the CI evidence and review findings prove the test is wrong; explain it explicitly. Never remove, skip, or weaken a valid test. Run narrow verification and the feasible full suite, commit integrated changes if any, and push only `HEAD:refs/heads/$BRANCH`. Do not consider the fix complete until the latest branch head has terminal CI evidence for the required repository-native checks.
 
 Before verification, bootstrap the tools needed for the checks you are about to run. Detect the repo’s test or validation expectations first, then install or enable only the missing tools required in this job’s context. Treat earlier sub-workflow environments as unrelated; a tool available to the test agent is not guaranteed to exist here. If a tool is missing and cannot be installed, record that limitation explicitly instead of replacing the check with a weaker one.
 

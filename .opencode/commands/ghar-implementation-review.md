@@ -1,9 +1,9 @@
 ---
-description: Attack the fresh implementation before reviewer and red team
+description: Attack the implementation for issue-focused correctness gaps before broader review
 argument-hint: <issue-number>
 ---
 
-# Implementation Red Team
+# Implementation Review
 
 **Input**: $ARGUMENTS
 
@@ -25,15 +25,13 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 ## Mission
 
-Require `spec-approved`, `tests-created`, and `implementation-done`. Fetch and check out the latest shared branch. Read the issue plus `spec-approved`, `tests-created`, and `implementation-done`; verify all markers exist. Inspect the exact implementation commit named in `implementation-done`, not the moving branch tip. Preserve independence: do not read `review-findings` or `redteam-findings`.
+Require `spec-approved`, `tests-created`, and `implementation-done`. Fetch and check out the latest shared branch. Read the issue plus `spec-approved`, `tests-created`, and `implementation-done`; verify all markers exist. Inspect the exact implementation commit named in `implementation-done`, not the moving branch tip. Preserve independence: do not read `maintainer-review-findings`, `adversarial-review-findings`, or `residual-gap-findings`.
 
-Attack the real production diff before reviewer and red-team proceed. Focus on crash paths, null/empty inputs, stale state, race conditions, boundary values, and systemic sibling-pattern bugs. Be stricter than the later reviewer: if the implementation still has a credible bug, stale state path, or under-specified behavior, report it here.
+Attack the real production diff before broader review proceeds. Focus on crash paths, null/empty inputs, stale state, race conditions, boundary values, and systemic sibling-pattern bugs only when they materially affect issue coverage and closure. Prefer the smallest credible defect over broad polish complaints. Avoid broad architectural critique unless it blocks the issue from being solved cleanly.
 
-Also attack UX regressions and overcoupled state ownership when they can cause flashing, missing feedback, or future change risk.
+Publish `<!-- implementation-review-findings -->` with:
 
-Publish `<!-- implementation-redteam-findings -->` with:
-
-1. `# Implementation Red-Team Findings`
+1. `# Implementation Review Findings`
 2. Exact implementation commit and files reviewed
 3. Attack scenarios attempted and evidence
 4. Blocking or non-blocking production issues found

@@ -1,9 +1,9 @@
 ---
-description: Attack the implementation and commit only justified adversarial tests
+description: Attack the implementation with adversarial tests focused on issue closure
 argument-hint: <issue-number>
 ---
 
-# Red Team
+# Adversarial Review
 
 **Input**: $ARGUMENTS
 
@@ -25,13 +25,13 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 ## Mission
 
-Require `spec-approved`, `tests-created`, and `implementation-done`. Fetch and check out the latest shared branch. Preserve independence: do not read `review-findings`. Review the exact implementation commit identified by `implementation-done`, not a moving branch tip. Attack realistic assumptions using boundaries, invalid inputs, compatibility, concurrency, security, and data integrity as applicable. Also attack premature CI handoff and implementation-coupled tests that can be replaced by behavior-based checks. Explicitly probe null/empty inputs, stale state, race conditions, and boundary values against the real production diff.
+Require `spec-approved`, `tests-created`, and `implementation-done`. Fetch and check out the latest shared branch. Preserve independence: do not read `maintainer-review-findings`. Review the exact implementation commit identified by `implementation-done`, not a moving branch tip. Attack realistic assumptions using boundaries, invalid inputs, compatibility, concurrency, security, and data integrity as applicable, but only when they can uncover a real issue-closure gap. Also attack premature CI handoff and implementation-coupled tests that can be replaced by behavior-based checks. Explicitly probe null/empty inputs, stale state, race conditions, and boundary values against the real production diff.
 
-You may modify only tests, fixtures, snapshots, and test-only helpers. Add a minimal adversarial test only when it demonstrates a credible uncovered scenario. Run relevant tests. If files changed, commit and push only `HEAD:refs/heads/$BRANCH`; otherwise do not create an empty commit.
+You may modify only tests, fixtures, snapshots, and test-only helpers. Add a minimal adversarial test only when it demonstrates a credible uncovered scenario that matters to the issue. Run relevant tests. If files changed, commit and push only `HEAD:refs/heads/$BRANCH`; otherwise do not create an empty commit.
 
-Publish `<!-- redteam-findings -->` with:
+Publish `<!-- adversarial-review-findings -->` with:
 
-1. `# Red-Team Findings`
+1. `# Adversarial Review Findings`
 2. Attack scenarios attempted and evidence
 3. Adversarial tests added, commit SHA, and exact commands (or state none)
 4. Failures found and severity

@@ -1,9 +1,9 @@
 ---
-description: Independently review implementation correctness and maintainability
+description: Review implementation correctness and maintainability with an issue-closure focus
 argument-hint: <issue-number>
 ---
 
-# Independent Reviewer
+# Maintainer Review
 
 **Input**: $ARGUMENTS
 
@@ -25,15 +25,15 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 ## Mission
 
-Fetch the latest shared branch without modifying it. Read the issue plus `spec-approved`, `tests-created`, and `implementation-done`; verify all markers exist. Review the commit identified by `implementation-done` and its diff against the repository default branch, not the moving branch tip. Preserve independence: do not read `redteam-findings` even if it already exists.
+Fetch the latest shared branch without modifying it. Read the issue plus `spec-approved`, `tests-created`, and `implementation-done`; verify all markers exist. Review the commit identified by `implementation-done` and its diff against the repository default branch, not the moving branch tip. Preserve independence: do not read `adversarial-review-findings` even if it already exists.
 
-Perform a production bug hunt: look for crashes, null/empty input failures, stale state, race conditions, and boundary-value regressions in the implementation itself, not just style or test shape.
+Perform a production bug hunt, but keep the findings tied to issue coverage and closure: look for crashes, null/empty input failures, stale state, race conditions, boundary-value regressions, and maintainability issues that would make the issue harder to finish correctly. Do not broaden into unrelated refactors or polish unless they affect the issue outcome.
 
 Pay special attention to UX-state regressions, duplicated state ownership, and architecture changes that make the next fix harder than the current bug.
 
-Publish `<!-- review-findings -->` with:
+Publish `<!-- maintainer-review-findings -->` with:
 
-1. `# Independent Review Findings`
+1. `# Maintainer Review Findings`
 2. Blocking findings ordered by severity, with file/line evidence
 3. Non-blocking correctness or maintainability findings
 4. Security/performance/compatibility observations when relevant

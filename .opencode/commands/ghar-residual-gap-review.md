@@ -1,9 +1,9 @@
 ---
-description: Compare issue vs PR for frontier gaps and file follow-up issues
+description: Compare delivered work vs issue intent for residual gaps and follow-ups
 argument-hint: <issue-number>
 ---
 
-# Frontier Gap Review
+# Residual Gap Review
 
 **Input**: $ARGUMENTS
 
@@ -23,13 +23,13 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 ## Mission
 
-Require `spec-approved`, `tests-created`, `implementation-done`, `implementation-redteam-findings`, `review-findings`, and `redteam-findings`. Fetch the latest shared branch read-only and inspect the exact implementation commit named in `implementation-done`, not the moving branch tip. Compare the issue intent against the delivered PR as if reviewing a strong frontier model: what is correct, what is still weak, what is overbuilt, and what remains as follow-up work even if the PR is mergeable.
+Require `spec-approved`, `tests-created`, `implementation-done`, and `pr-seeded`. Fetch the latest shared branch read-only and inspect the exact implementation commit named in `implementation-done`, not the moving branch tip. Compare the issue intent against the delivered PR as a residual-gap review: what is correct, what remains weak, what is overbuilt, and what still needs follow-up work even if the issue is otherwise closable.
 
-Keep the result merge-safe. If a gap is critical or high but does not block the issue fix, record it, explain why it matters, and create a follow-up issue if one does not already exist. Do not block the PR just because the frontier comparison found incomplete polish.
+Keep the result merge-safe and issue-focused. If a gap is critical or high but does not block the issue fix, record it, explain why it matters, and create a follow-up issue if one does not already exist. Do not block the PR just because the residual review found incomplete polish.
 
-Publish `<!-- frontier-gap-findings -->` with:
+Publish `<!-- residual-gap-findings -->` with:
 
-1. `# Frontier Gap Review`
+1. `# Residual Gap Review`
 2. Issue-vs-PR comparison summary
 3. Strengths that match or exceed a frontier baseline
 4. Weaknesses or residual gaps, grouped by severity
