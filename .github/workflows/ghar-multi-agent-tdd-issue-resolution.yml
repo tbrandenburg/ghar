@@ -1,6 +1,7 @@
+---
 name: GHAR Multi-Agent TDD Issue Resolution
 
-on:
+'on':
   workflow_dispatch:
     inputs:
       issue_number:
@@ -28,7 +29,10 @@ jobs:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
         run: |
           case "$ISSUE_NUMBER" in
-            ''|*[!0-9]*) echo "issue_number must contain digits only" >&2; exit 1 ;;
+            ''|*[!0-9]*)
+              echo "issue_number must contain digits only" >&2
+              exit 1
+              ;;
           esac
           gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" --silent
 
@@ -43,7 +47,7 @@ jobs:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
         run: |
           BRANCH="agent/issue-${ISSUE_NUMBER}-implementation"
-          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
             echo "Reusing existing branch $BRANCH"
           else
             git push origin "HEAD:refs/heads/$BRANCH"
@@ -100,7 +104,11 @@ jobs:
 
   spec-synthesizer:
     name: "2. Spec Synthesizer"
-    needs: [planner-requirements, planner-architecture, planner-risks, planner-research]
+    needs:
+      - planner-requirements
+      - planner-architecture
+      - planner-risks
+      - planner-research
     uses: ./.github/workflows/core-opencode-run.yml
     with:
       run-name: spec-synthesizer
@@ -239,7 +247,12 @@ jobs:
       command: ghar-ci-evidence
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
-    permissions: {actions: read, checks: read, contents: read, issues: write, pull-requests: read}
+    permissions:
+      actions: read
+      checks: read
+      contents: read
+      issues: write
+      pull-requests: read
     secrets: inherit
 
   fixer-integrator:
@@ -256,7 +269,12 @@ jobs:
       command: ghar-fixer-integrator
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
-    permissions: {actions: read, checks: read, contents: write, issues: write, pull-requests: write}
+    permissions:
+      actions: read
+      checks: read
+      contents: write
+      issues: write
+      pull-requests: write
     secrets: inherit
 
   pr-finalizer:
@@ -268,5 +286,10 @@ jobs:
       command: ghar-pr-finalizer
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
-    permissions: {actions: read, checks: read, contents: read, issues: write, pull-requests: write}
+    permissions:
+      actions: read
+      checks: read
+      contents: read
+      issues: write
+      pull-requests: write
     secrets: inherit
