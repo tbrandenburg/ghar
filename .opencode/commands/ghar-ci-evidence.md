@@ -18,9 +18,9 @@ Extract the GitHub issue number from `$ARGUMENTS`. Set `ISSUE_NUMBER` to that nu
 BRANCH="agent/issue-${ISSUE_NUMBER}-implementation"
 ```
 
-Use `gh api` with `GH_TOKEN` to read the issue and its comments. Never push to `main` or the repository default branch. Do not expose private reasoning; publish only the requested artifact.
+Use `gh api` with `GH_TOKEN` to read the issue and its comments. Never push to `main` or the repository default branch. Do not expose private reasoning; publish only the requested issue comment.
 
-To publish an artifact, write the complete Markdown body to a temporary file. Its first line must be the exact marker shown below. Find comments with `gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments?per_page=100"`, selecting an exact first-line marker match. If one exists, update that comment with `gh api --method PATCH`; otherwise create it with `gh api --method POST`. If legacy duplicates exist, update the newest matching comment and delete the older matching duplicates. Do not create a second artifact comment.
+To publish an issue comment, write the complete Markdown body to a temporary file. Its first line must be the exact marker shown below. Find comments with `gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments?per_page=100"`, selecting an exact first-line marker match. If one exists, update that comment with `gh api --method PATCH`; otherwise create it with `gh api --method POST`. If legacy duplicates exist, update the newest matching comment and delete the older matching duplicates. Do not create a second comment with the same marker.
 
 
 ## Mission
@@ -33,7 +33,7 @@ Do not treat CI as verified until the latest shared branch head has reached a te
 
 Before running checks, bootstrap the required toolchain for the current context. Discover what the repository expects, then install or enable only the missing tools needed for the selected commands in this job. Do not assume tools installed by another workflow step or another sub-workflow are present here. If a required tool is unavailable, report it as an environment limitation rather than skipping the check.
 
-Also inspect GitHub check runs for the shared branch or its pull request when available, and re-check them until they stop moving. Publish `<!-- ci-evidence -->` as the human-readable audit trail for the branch head, then return a concise report in your final output containing:
+Also inspect GitHub check runs for the shared branch or its pull request when available, and re-check them until they stop moving. Publish `<!-- ci-evidence -->` as the human-readable issue-comment audit trail for the branch head, then return a concise report in your final output containing:
 
 1. Branch and tested commit SHA
 2. Every exact command run, exit status, and short relevant error excerpt

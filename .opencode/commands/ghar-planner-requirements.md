@@ -18,16 +18,16 @@ Extract the GitHub issue number from `$ARGUMENTS`. Set `ISSUE_NUMBER` to that nu
 BRANCH="agent/issue-${ISSUE_NUMBER}-implementation"
 ```
 
-Use `gh api` with `GH_TOKEN` to read the issue and its comments. Never push to `main` or the repository default branch. Do not expose private reasoning; publish only the requested artifact.
+Use `gh api` with `GH_TOKEN` to read the issue and its comments. Never push to `main` or the repository default branch. Do not expose private reasoning; publish only the requested issue comment.
 
-To publish an artifact, write the complete Markdown body to a temporary file. Its first line must be the exact marker shown below. Find comments with `gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments?per_page=100"`, selecting an exact first-line marker match. If one exists, update that comment with `gh api --method PATCH`; otherwise create it with `gh api --method POST`. If legacy duplicates exist, update the newest matching comment and delete the older matching duplicates. Do not create a second artifact comment.
+To publish an issue comment, write the complete Markdown body to a temporary file. Its first line must be the exact marker shown below. Find comments with `gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments?per_page=100"`, selecting an exact first-line marker match. If one exists, update that comment with `gh api --method PATCH`; otherwise create it with `gh api --method POST`. If legacy duplicates exist, update the newest matching comment and delete the older matching duplicates. Do not create a second comment with the same marker.
 
 
 ## Mission
 
-Read the issue body, non-agent discussion, and relevant code on the shared branch. Make an independent requirements-first pass. Do not read comments whose first line is a GHAR artifact marker, including other planner output.
+Read the issue body, non-agent discussion, and relevant code on the shared branch. Make an independent requirements-first pass. Do not read comments whose first line is a GHAR comment marker, including other planner output.
 
-Treat UX as part of the requirement, not a follow-up: name the user-visible transition, loading, error, and stale-state behavior that must be preserved. Also capture any architecture invariants that matter for future change cost, but keep the requirements artifact behavior-first and minimal.
+Treat UX as part of the requirement, not a follow-up: name the user-visible transition, loading, error, and stale-state behavior that must be preserved. Also capture any architecture invariants that matter for future change cost, but keep the requirements plan behavior-first and minimal.
 
 Publish `<!-- plan-requirements -->` with:
 

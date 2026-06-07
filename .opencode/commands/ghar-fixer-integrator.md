@@ -18,14 +18,14 @@ The first line of `$ARGUMENTS` identifies the GitHub issue number; the remaining
 BRANCH="agent/issue-${ISSUE_NUMBER}-implementation"
 ```
 
-Use `gh api` with `GH_TOKEN` to read the issue and its comments. Never push to `main` or the repository default branch. Do not expose private reasoning; publish only the requested artifact.
+Use `gh api` with `GH_TOKEN` to read the issue and its comments. Never push to `main` or the repository default branch. Do not expose private reasoning; publish only the requested issue comment.
 
-To publish an artifact, write the complete Markdown body to a temporary file. Its first line must be the exact marker shown below. Find comments with `gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments?per_page=100"`, selecting an exact first-line marker match. If one exists, update that comment with `gh api --method PATCH`; otherwise create it with `gh api --method POST`. If legacy duplicates exist, update the newest matching comment and delete the older matching duplicates. Do not create a second artifact comment.
+To publish an issue comment, write the complete Markdown body to a temporary file. Its first line must be the exact marker shown below. Find comments with `gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments?per_page=100"`, selecting an exact first-line marker match. If one exists, update that comment with `gh api --method PATCH`; otherwise create it with `gh api --method POST`. If legacy duplicates exist, update the newest matching comment and delete the older matching duplicates. Do not create a second comment with the same marker.
 
 
 ## Mission
 
-Require `spec-approved`, `implementation-review-findings`, `maintainer-review-findings`, `adversarial-review-findings`, `residual-gap-findings`, and `ci-evidence`. Fetch and check out the latest shared branch. Prioritize only blockers that are necessary for issue coverage and closure, repair production defects, address credible adversarial failures, and restore repository-native checks.
+Require `spec-approved`, `implementation-review-findings`, `maintainer-review-findings`, `adversarial-review-findings`, `residual-gap-findings`, and `ci-evidence`. Fetch and check out the latest shared branch. Read the issue plus the required issue comments by marker, including `<!-- ci-evidence -->`. Prioritize only blockers that are necessary for issue coverage and closure, repair production defects, address credible adversarial failures, and restore repository-native checks.
 
 Own the repair loop end-to-end: after every push, re-check the latest branch head and wait for the newest CI cycle to settle. If checks are still pending, keep waiting rather than handing off early. If checks fail, classify the failure, repair it, and verify again before publishing the summary.
 

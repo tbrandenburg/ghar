@@ -254,10 +254,7 @@ jobs:
     with:
       run-name: fixer-integrator
       command: ghar-fixer-integrator
-      prompt: |
-        Issue number: ${{ inputs.issue_number }}
-        CI evidence report:
-        ${{ needs.ci-evidence.outputs.results }}
+      prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
     permissions: {actions: read, checks: read, contents: write, issues: write, pull-requests: write}
     secrets: inherit
