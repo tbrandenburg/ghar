@@ -27,7 +27,7 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 Require `spec-approved`, `tests-created`, and `implementation-done`. Fetch and check out the latest shared branch. Read the issue plus `spec-approved`, `tests-created`, and `implementation-done`; verify all markers exist. Inspect the exact implementation commit named in `implementation-done`, not the moving branch tip. Preserve independence: do not read `maintainer-review-findings`, `adversarial-review-findings`, or `residual-gap-findings`.
 
-Attack the real production diff before broader review proceeds. Focus on crash paths, null/empty inputs, stale state, race conditions, boundary values, and systemic sibling-pattern bugs only when they materially affect issue coverage and closure. Prefer the smallest credible defect over broad polish complaints. Avoid broad architectural critique unless it blocks the issue from being solved cleanly.
+Attack the real production diff before broader review proceeds. Focus on crash paths, null/empty inputs, stale state, race conditions, boundary values, and systemic sibling-pattern bugs only when they materially affect issue coverage and closure. Prefer the smallest credible defect over broad polish complaints. Treat additional sibling defects as follow-up issues unless they share the same root cause and block closure. Avoid broad architectural critique unless it blocks the issue from being solved cleanly.
 
 Publish `<!-- implementation-review-findings -->` with:
 
@@ -37,6 +37,7 @@ Publish `<!-- implementation-review-findings -->` with:
 4. Blocking or non-blocking production issues found
 5. Minimum viable fix recommendations
 6. Residual risks or explicit no-findings statement
+7. Scope delta assessment: required issue files vs extra touched paths, with justification or follow-up
 
 ## Boundaries
 

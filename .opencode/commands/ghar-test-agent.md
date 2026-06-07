@@ -25,7 +25,7 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 ## Mission
 
-Require the `spec-approved` artifact. Fetch and check out the shared branch with `git fetch origin "$BRANCH"` and `git checkout -B "$BRANCH" "origin/$BRANCH"`. Inspect existing tests, then encode the approved acceptance criteria as the smallest deterministic set of tests that fail for the intended missing behavior.
+Require the `spec-approved` artifact. Fetch and check out the shared branch with `git fetch origin "$BRANCH"` and `git checkout -B "$BRANCH" "origin/$BRANCH"`. Inspect existing tests, then encode the approved acceptance criteria as the smallest deterministic set of tests that fail for the intended missing behavior. Each test must map to one acceptance criterion and one direct code path; avoid sibling-path coverage unless the approved spec explicitly requires shared behavior.
 
 Classify the work before writing tests:
 
@@ -47,7 +47,7 @@ Publish `<!-- tests-created -->` with:
 1. `# Tests Created`
 2. Commit SHA
 3. Test-only files changed
-4. Acceptance criteria and edge cases covered
+4. Acceptance criteria, direct code paths, and edge cases covered
 5. Exact commands run and expected initial failures
 6. Any untestable criterion or blocker
 

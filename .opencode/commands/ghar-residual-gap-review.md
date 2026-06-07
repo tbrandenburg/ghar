@@ -33,7 +33,7 @@ Publish `<!-- residual-gap-findings -->` with:
 2. Issue-vs-PR comparison summary
 3. Strengths that match or exceed a frontier baseline
 4. Weaknesses or residual gaps, grouped by severity
-5. UX and architecture score deltas, with concise justification
+5. UX, architecture, and scope score deltas, with concise justification
 6. Follow-up issues proposed or created for critical/high gaps
 7. Merge-safe verdict and explicit remaining todo list
 

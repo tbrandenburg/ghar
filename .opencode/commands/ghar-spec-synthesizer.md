@@ -27,7 +27,7 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 Read the issue, codebase, and exactly these artifact comments: `plan-requirements`, `plan-architecture`, `plan-risks`, and `plan-research`. Verify all four markers exist before proceeding. Resolve conflicts explicitly and choose the smallest safe, repo-native decision.
 
-Build a contradiction matrix before writing the spec. Where the planner artifacts disagree, say which criterion wins and why. Make every must-have criterion observable, testable, and tied to the smallest viable code change. If a criterion cannot be observed at runtime, rewrite it or demote it out of must-have scope. Use `plan-research` as the source of current external references, but keep repo-native patterns and the existing codebase as the primary decision basis.
+Build a contradiction matrix before writing the spec. Where the planner artifacts disagree, say which criterion wins and why. Make every must-have criterion observable, testable, and tied to the smallest viable code change. If a criterion cannot be observed at runtime, rewrite it or demote it out of must-have scope. Do not introduce new shared abstractions, shared guards, or cross-page state unless the issue requires them. Use `plan-research` as the source of current external references, but keep repo-native patterns and the existing codebase as the primary decision basis.
 
 Publish `<!-- spec-final -->` with:
 

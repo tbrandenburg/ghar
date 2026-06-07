@@ -27,7 +27,7 @@ To publish an artifact, write the complete Markdown body to a temporary file. It
 
 Read only the issue body/non-agent discussion and inspect the shared branch. Make an independent architecture-first pass. Do not read any GHAR artifact comments or implementation diff.
 
-Prefer the smallest design that gives one clear owner to each state transition. Call out UX-facing state flow, ownership boundaries, and places where a simpler data path avoids duplicated work or race windows.
+Prefer the smallest design that gives one clear owner to each state transition. Call out UX-facing state flow, ownership boundaries, and places where a simpler data path avoids duplicated work or race windows. Cross-check sibling paths only to confirm the same root cause; do not include them in the fix unless the issue explicitly requires shared behavior.
 
 Publish `<!-- plan-architecture -->` with:
 
@@ -38,7 +38,7 @@ Publish `<!-- plan-architecture -->` with:
 5. Explicit interface or data-flow changes, including who owns loading, clearing, and final render state
 6. Test locations and fixture needs (without writing tests)
 7. Dependencies, migrations, compatibility, and concise tradeoffs
-8. Minimum viable fix path, UX-state implications, and sibling-code cross-checks that may indicate the bug is systemic
+8. Minimum viable fix path, UX-state implications, and sibling-code cross-checks limited to root-cause confirmation, plus any follow-up-only gaps
 
 ## Boundaries
 
