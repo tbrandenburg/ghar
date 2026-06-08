@@ -281,117 +281,7 @@ Treat any CI state older than the latest fixer push as stale. For large PRs (>50
 
 ## Phase 7: PUBLISH — PR, Review, and Report
 
-### 7.1 Generate Local Review Report
-
-```bash
-mkdir -p .claude/PRPs/reviews
-```
-
-**Path**: `.claude/PRPs/reviews/pr-{NUMBER}-review.md`
-
-```markdown
----
-pr: {NUMBER}
-issue: {ISSUE_NUMBER}
-title: "{TITLE}"
-author: "{AUTHOR}"
-reviewed: {ISO_TIMESTAMP}
-recommendation: {approve|draft}
----
-
-# PR Review: #{NUMBER} - {TITLE}
-
-**Author**: @{author}
-**Branch**: {head} -> {base}
-**Files Changed**: {count} (+{additions}/-{deletions})
-
----
-
-## Summary
-
-{2-3 sentences: What this PR does and overall assessment}
-
----
-
-## Implementation Context
-
-| Artifact | Status |
-|----------|--------|
-| spec-approved | present |
-| implementation-done | present |
-| fixer-summary | present |
-| residual-gap-findings | present |
-
----
-
-## Changes Overview
-
-| File | Changes | Assessment |
-|------|---------|------------|
-| `{path/to/file.ts}` | +{N}/-{M} | {PASS/WARN/FAIL} |
-
----
-
-## Findings
-
-### Critical
-{If none: "No critical findings."}
-
-- **`{file.ts}:{line}`** - {Issue description}
-  - **Why**: {Explanation}
-  - **Fix**: {Specific recommendation}
-
-### High Priority
-### Medium Priority
-### Suggestions
-
----
-
-## Validation Results
-
-| Check | Status | Details |
-|-------|--------|---------|
-| Type Check | {PASS/FAIL} | {notes} |
-| Lint | {PASS/WARN} | {count} warnings |
-| Tests | {PASS/FAIL} | {count} passed |
-| Build | {PASS/FAIL} | {notes} |
-
----
-
-## Pattern Compliance
-
-- [ ] Follows existing code structure
-- [ ] Type safety maintained
-- [ ] Naming conventions followed
-- [ ] Tests added for new code
-- [ ] Documentation updated
-
----
-
-## Follow-up Issues Opened
-
-{List of created issue URLs, or "None"}
-
----
-
-## What's Good
-
-{Acknowledge positive aspects}
-
----
-
-## Recommendation
-
-**{APPROVE / KEEP DRAFT}**
-
-{Rationale and next steps}
-
----
-
-*Reviewed by Claude (ghar-pr-finalizer)*
-```
-
-### 7.2 Create or Update the Pull Request
+### 7.1 Create or Update the Pull Request
 
 Create exactly one pull request from `$BRANCH` to the repository default branch, or update the existing open/closed-unmerged PR for that head. Never create a duplicate. The PR body must:
 - Link `Closes #$ISSUE_NUMBER`
@@ -401,17 +291,21 @@ Create exactly one pull request from `$BRANCH` to the repository default branch,
 
 Do not enable auto-merge or merge the PR.
 
-### 7.3 Post GitHub Review
+### 7.2 Post GitHub Review
+
+Write the review body to a temporary file and post it:
 
 ```bash
 # When CI green and ready to approve
-gh pr review {NUMBER} --approve --body-file .claude/PRPs/reviews/pr-{NUMBER}-review.md
+gh pr review {NUMBER} --approve --body-file /tmp/pr-review-body.md
 
 # When still draft / CI not green — comment only
-gh pr comment {NUMBER} --body-file .claude/PRPs/reviews/pr-{NUMBER}-review.md
+gh pr comment {NUMBER} --body-file /tmp/pr-review-body.md
 ```
 
-### 7.4 Publish `<!-- pr-final -->` Issue Comment
+The review body must include: summary, changes overview, findings by severity, validation results table, follow-up issues opened (with links), what's good, and recommendation.
+
+### 7.3 Publish `<!-- pr-final -->` Issue Comment
 
 Publish `<!-- pr-final -->` with:
 
@@ -426,7 +320,6 @@ Publish `<!-- pr-final -->` with:
 9. Human review checklist and explicit merge decision request
 
 **PHASE_7_CHECKPOINT:**
-- [ ] Local review report generated
 - [ ] PR created or updated
 - [ ] GitHub review posted (approve or comment)
 - [ ] `<!-- pr-final -->` comment published
@@ -466,7 +359,6 @@ Publish `<!-- pr-final -->` with:
 
 ### Artifacts
 
-- Report: `.claude/PRPs/reviews/pr-{NUMBER}-review.md`
 - PR Comment: {pr-final comment URL}
 
 ### Next Steps
