@@ -4,6 +4,10 @@
 
 `Makefile.ghar` installs Github workflow files and needed opencode commands and agents in other repo contexts.
 
+## Version
+
+The authoritative version is the `GHAR_VERSION` variable at the top of `Makefile.ghar`. Git tags and commit messages must match this value. Always read `Makefile.ghar` before deciding the next version number.
+
 ## Guidelines
 
 * If there are files added or renamed the impact on `Makefile.ghar` has to be checked
