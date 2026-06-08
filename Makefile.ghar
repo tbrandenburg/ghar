@@ -10,7 +10,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install SOURCE_REPO=owner/repo
 
 # GHAR version (bumped on each release)
-GHAR_VERSION = 0.8.2
+GHAR_VERSION = 0.8.3
 
 # Default source repository (can be overridden)
 SOURCE_REPO ?= tbrandenburg/ghar
@@ -132,6 +132,18 @@ install: setup-dirs
 	@echo "  2. Test the workflow manually in GitHub Actions"
 	@echo "  3. The workflows will run automatically (daily + on issue open)"
 	@echo ""
+	@echo "╔══════════════════════════════════════════════════════════════════╗"
+	@echo "║  ACTION REQUIRED — Add GH_PAT secret for CI test triggering     ║"
+	@echo "╠══════════════════════════════════════════════════════════════════╣"
+	@echo "║  GitHub blocks pull_request events from GITHUB_TOKEN (bot).     ║"
+	@echo "║  Without GH_PAT, GHAR-created PRs will NOT fire your tests.     ║"
+	@echo "║                                                                  ║"
+	@echo "║  1. Create a Fine-Grained PAT (Settings → Developer settings):  ║"
+	@echo "║     Permissions: Contents: write  +  Pull requests: write       ║"
+	@echo "║  2. Add it as a repo secret named exactly:  GH_PAT              ║"
+	@echo "║     (Settings → Secrets and variables → Actions)                ║"
+	@echo "╚══════════════════════════════════════════════════════════════════╝"
+	@echo ""
 	@echo "To customize the schedule, edit .github/workflows/ghar-daily-routine.yml"
 	@echo "$(GHAR_VERSION)" > .ghar-version
 	@echo "  📌 Installed version $(GHAR_VERSION) recorded in .ghar-version"
@@ -180,6 +192,18 @@ install-force: setup-dirs
 	@echo "     git add .github .opencode && git commit -m 'Add GHAR auto-routines'"
 	@echo "  2. Test the workflow manually in GitHub Actions"
 	@echo "  3. The workflows will run automatically (daily + on issue open)"
+	@echo ""
+	@echo "╔══════════════════════════════════════════════════════════════════╗"
+	@echo "║  ACTION REQUIRED — Add GH_PAT secret for CI test triggering     ║"
+	@echo "╠══════════════════════════════════════════════════════════════════╣"
+	@echo "║  GitHub blocks pull_request events from GITHUB_TOKEN (bot).     ║"
+	@echo "║  Without GH_PAT, GHAR-created PRs will NOT fire your tests.     ║"
+	@echo "║                                                                  ║"
+	@echo "║  1. Create a Fine-Grained PAT (Settings → Developer settings):  ║"
+	@echo "║     Permissions: Contents: write  +  Pull requests: write       ║"
+	@echo "║  2. Add it as a repo secret named exactly:  GH_PAT              ║"
+	@echo "║     (Settings → Secrets and variables → Actions)                ║"
+	@echo "╚══════════════════════════════════════════════════════════════════╝"
 	@echo ""
 	@echo "To customize the schedule, edit .github/workflows/ghar-daily-routine.yml"
 	@echo "$(GHAR_VERSION)" > .ghar-version
