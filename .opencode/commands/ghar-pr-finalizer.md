@@ -25,7 +25,7 @@ To publish an issue comment, write the complete Markdown body to a temporary fil
 
 ## Mission
 
-Require all required issue comments: `spec-approved`, `tests-created`, `implementation-done`, `implementation-review-findings`, `maintainer-review-findings`, `adversarial-review-findings`, `residual-gap-findings`, `pr-seeded`, `ci-evidence`, and `fixer-summary`. Fetch the latest shared branch read-only. Compare it with the repository default branch, inspect commit order, changed files, and available checks.
+Require all required issue comments: `spec-approved`, `tests-created`, `implementation-done`, `implementation-review-findings`, `maintainer-review-findings`, `adversarial-review-findings`, `residual-gap-findings`, `pr-seeded`, `e2e-evidence`, and `fixer-summary`. Fetch the latest shared branch read-only. Compare it with the repository default branch, inspect commit order, changed files, and available checks.
 
 Treat any CI state older than the latest fixer push as stale. Inspect the latest branch head and report pending, failing, missing, or unobserved required repository-native checks clearly in the PR summary and issue comment. If the head is not fully green, keep the PR draft open and record the blockers; do not wait on a separate hard gate.
 

@@ -10,7 +10,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install SOURCE_REPO=owner/repo
 
 # GHAR version (bumped on each release)
-GHAR_VERSION = 0.7.11
+GHAR_VERSION = 0.8.0
 
 # Default source repository (can be overridden)
 SOURCE_REPO ?= tbrandenburg/ghar
@@ -43,7 +43,7 @@ GHAR_FILES = \
 	.opencode/commands/ghar-maintainer-review.md:Maintainer_review_command \
 	.opencode/commands/ghar-adversarial-review.md:Adversarial_review_command \
 	.opencode/commands/ghar-residual-gap-review.md:Residual_gap_review_command \
-	.opencode/commands/ghar-ci-evidence.md:CI_evidence_command \
+	.opencode/commands/ghar-e2e-evidence.md:E2E_evidence_command \
 	.opencode/commands/ghar-fixer-integrator.md:Fixer_integrator_command \
 	.opencode/commands/ghar-pr-finalizer.md:PR_finalizer_command \
 	.opencode/commands/ghar-stale-check.md:Stale_check_command \
