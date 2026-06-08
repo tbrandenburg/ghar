@@ -31,7 +31,7 @@ Prefer one clear owner for each state transition. If a simpler direct change pre
 
 Modify production files only. Do not edit tests, fixtures, snapshots, or the spec. Run narrow tests and broader relevant checks, then run the full test suite before handoff. If any test is still red, continue the implementation loop until it passes or you have a concrete dependency/tooling blocker that prevents the suite from being executed. Before committing, compare changed paths against the test commit and verify this commit adds no test-file changes. Commit production changes and push only `HEAD:refs/heads/$BRANCH`.
 
-Before running checks, bootstrap the toolchain needed for this step. Detect the repo’s required test and validation commands first, then install or enable only the missing tools needed to execute them in the current context. Assume sub-workflows and runner environments may differ from earlier jobs. If a required tool cannot be made available, report the missing dependency clearly and do not substitute a weaker check unless the spec explicitly allows it.
+Before running checks, bootstrap the toolchain needed for this step. First identify the exact tools needed for the repo’s test suite, then check whether each exists in the current context, then install or enable only the missing tools needed to execute them. Assume sub-workflows and runner environments may differ from earlier jobs. If a required tool cannot be made available, report the missing dependency clearly and do not substitute a weaker check unless the spec explicitly allows it.
 
 Publish `<!-- implementation-done -->` with:
 
