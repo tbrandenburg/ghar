@@ -250,13 +250,12 @@ jobs:
                 --body "$PR_BODY"
             else
               echo "Creating new PR from ${BRANCH}"
-              GH_TOKEN="$AUTH_TOKEN" gh pr create \
-                --head "$BRANCH" \
-                --title "$PR_TITLE" \
-                --body "$PR_BODY" \
-                --no-draft
-            fi
+            GH_TOKEN="$AUTH_TOKEN" gh pr create \
+              --head "$BRANCH" \
+              --title "$PR_TITLE" \
+              --body "$PR_BODY"
           fi
+        fi
 
   implementation-review:
     name: "8A. Implementation Review"
