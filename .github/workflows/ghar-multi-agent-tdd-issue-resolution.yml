@@ -337,8 +337,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
     permissions:
-      actions: read
-      checks: read
+      actions: write
+      checks: write
       contents: write
       issues: write
       pull-requests: write
