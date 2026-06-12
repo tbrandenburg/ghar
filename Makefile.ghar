@@ -10,7 +10,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install SOURCE_REPO=owner/repo
 
 # GHAR version (bumped on each release)
-GHAR_VERSION = 0.9.1
+GHAR_VERSION = 0.10.0
 
 # Default source repository (can be overridden)
 SOURCE_REPO ?= tbrandenburg/ghar
