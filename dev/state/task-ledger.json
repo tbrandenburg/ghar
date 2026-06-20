@@ -1,0 +1,35 @@
+{
+  "ISSUE_23_ANALYSIS": {
+    "status": "done",
+    "evidence": [
+      "gh issue view 23 --json title,body,state,url -> root cause: missing terminal gh pr edit publish step in ghar-pr-finalizer.md",
+      "gh pr view 31 --json title,body,headRefName,baseRefName,state,mergeable,mergeStateStatus,url -> PR is open, mergeable, and already contains the body-refresh fix"
+    ],
+    "last_verified": "2026-06-20T08:44:43Z"
+  },
+  "ISSUE_23_PLAN": {
+    "status": "done",
+    "evidence": [
+      ".claude/PRPs/issues/completed/issue-23.md -> implementation plan calls for headRefOid, terminal PR-body refresh, and checkpoint update",
+      ".opencode/commands/ghar-pr-finalizer.md -> current branch already includes the planned 7.4 body-refresh section"
+    ],
+    "last_verified": "2026-06-20T08:44:43Z"
+  },
+  "ISSUE_23_IMPLEMENTATION": {
+    "status": "done",
+    "evidence": [],
+    "last_verified": "2026-06-20T08:44:43Z"
+  },
+  "ISSUE_23_COMMIT_PUSH": {
+    "status": "in_progress",
+    "evidence": [],
+    "last_verified": "2026-06-20T08:44:43Z"
+  },
+  "ISSUE_23_CI_VERIFY": {
+    "status": "pending",
+    "evidence": [
+      "gh pr checks 31 -> no checks reported on the fix/issue-23-gh-pr-edit branch"
+    ],
+    "last_verified": "2026-06-20T08:44:43Z"
+  }
+}
