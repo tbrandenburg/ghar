@@ -32,5 +32,40 @@
       "gh run list --branch fix/issue-23-gh-pr-edit --limit 5 --json databaseId,workflowName,status,conclusion,headSha,displayTitle,createdAt -> []"
     ],
     "last_verified": "2026-06-20T08:47:01Z"
+  },
+  "ISSUE_27_ANALYSIS": {
+    "status": "done",
+    "evidence": [
+      "git diff --stat origin/main...HEAD -> .claude/PRPs/issues/completed/issue-27.md | 25 +++++++++++++++++++++++++, .opencode/commands/ghar-pr-finalizer.md | 20 ++++++++++++++++----",
+      "gh pr view 32 --json number,title,state,baseRefName,headRefName,mergeStateStatus,reviewDecision,body,url -> mergeStateStatus CLEAN, state OPEN",
+      "git show --stat 8ed32c3 -> Fix: gh pr review --approve gated on fragile artifact chain, PRs never get approved (#27)"
+    ],
+    "last_verified": "2026-06-20T12:51:49+02:00"
+  },
+  "ISSUE_27_PLAN": {
+    "status": "done",
+    "evidence": [
+      "git show --stat --patch --unified=40 8ed32c3 -> moved approval decision to a live comment check before gh pr review --approve",
+      "gh pr view 32 --json number,title,state,baseRefName,headRefName,mergeStateStatus,reviewDecision,body,url -> mergeStateStatus CLEAN, state OPEN"
+    ],
+    "last_verified": "2026-06-20T12:51:49+02:00"
+  },
+  "ISSUE_27_IMPLEMENTATION": {
+    "status": "done",
+    "evidence": [
+      "apply_patch -> added dev/state/task-ledger.json",
+      "jq empty dev/state/task-ledger.json && git diff --check -> no output"
+    ],
+    "last_verified": "2026-06-20T12:51:49+02:00"
+  },
+  "ISSUE_27_COMMIT_PUSH": {
+    "status": "in_progress",
+    "evidence": [],
+    "last_verified": "2026-06-20T12:51:49+02:00"
+  },
+  "ISSUE_27_CI_VERIFY": {
+    "status": "pending",
+    "evidence": [],
+    "last_verified": "2026-06-20T12:51:49+02:00"
   }
 }
