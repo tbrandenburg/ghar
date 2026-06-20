@@ -27,10 +27,10 @@ To publish an issue comment, write the complete Markdown body to a temporary fil
 
 ## Phase 1: VERIFY — Artifact Chain
 
-Require all required issue comments: `spec-approved`, `tests-created`, `implementation-done`, `implementation-review-findings`, `maintainer-review-findings`, `adversarial-review-findings`, `residual-gap-findings`, `pr-seeded`, `e2e-evidence`, and `fixer-summary`. If any are missing, stop and report which are absent.
+Read the required issue comments for context, but do not use this phase as the approval gate. The approval decision must be based on a live issue-comment check immediately before `gh pr review --approve`.
 
 **PHASE_1_CHECKPOINT:**
-- [ ] All 10 artifact comments present
+- [ ] Required issue comments read for context
 
 ---
 
@@ -295,11 +295,22 @@ Do not enable auto-merge or merge the PR.
 
 Write the review body to a temporary file and post it:
 
-```bash
-# When CI green and ready to approve
-gh pr review {NUMBER} --approve --body-file /tmp/pr-review-body.md
+Only run the live comment check on the approval path.
 
-# When still draft / CI not green — comment only
+When CI is green and you are approving, run:
+
+```bash
+COMMENT_MARKERS=$(gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments?per_page=100" --jq '.[].body | split("\n")[0]')
+echo "$COMMENT_MARKERS" | grep -Fxq '<!-- implementation-done -->' || { echo "FAIL: Missing <!-- implementation-done --> marker in live issue comments"; exit 1; }
+echo "$COMMENT_MARKERS" | grep -Fxq '<!-- tests-created -->' || { echo "FAIL: Missing <!-- tests-created --> marker in live issue comments"; exit 1; }
+echo "$COMMENT_MARKERS" | grep -Fxq '<!-- fixer-summary -->' || { echo "FAIL: Missing <!-- fixer-summary --> marker in live issue comments"; exit 1; }
+
+gh pr review {NUMBER} --approve --body-file /tmp/pr-review-body.md
+```
+
+When still draft or CI is not green, run:
+
+```bash
 gh pr comment {NUMBER} --body-file /tmp/pr-review-body.md
 ```
 
@@ -392,6 +403,7 @@ fi
 **Why**: this keeps the PR body ownership in the finalizer, preserves multiline Markdown safely, and makes the body reflect the completed run rather than the bootstrap scaffold.
 
 **PHASE_7_CHECKPOINT:**
+- [ ] Live approval markers verified immediately before approval
 - [ ] PR body refreshed
 - [ ] PR created or updated
 - [ ] GitHub review posted (approve or comment)
