@@ -295,16 +295,22 @@ Do not enable auto-merge or merge the PR.
 
 Write the review body to a temporary file and post it:
 
+Only run the live comment check on the approval path.
+
+When CI is green and you are approving, run:
+
 ```bash
-COMMENT_BODIES=$(gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments?per_page=100" --jq '.[].body')
-echo "$COMMENT_BODIES" | grep -q '<!-- implementation-done -->' || { echo "FAIL: Missing <!-- implementation-done --> marker in live issue comments"; exit 1; }
-echo "$COMMENT_BODIES" | grep -q '<!-- tests-created -->' || { echo "FAIL: Missing <!-- tests-created --> marker in live issue comments"; exit 1; }
-echo "$COMMENT_BODIES" | grep -q '<!-- fixer-summary -->' || { echo "FAIL: Missing <!-- fixer-summary --> marker in live issue comments"; exit 1; }
+COMMENT_MARKERS=$(gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments?per_page=100" --jq '.[].body | split("\n")[0]')
+echo "$COMMENT_MARKERS" | grep -Fxq '<!-- implementation-done -->' || { echo "FAIL: Missing <!-- implementation-done --> marker in live issue comments"; exit 1; }
+echo "$COMMENT_MARKERS" | grep -Fxq '<!-- tests-created -->' || { echo "FAIL: Missing <!-- tests-created --> marker in live issue comments"; exit 1; }
+echo "$COMMENT_MARKERS" | grep -Fxq '<!-- fixer-summary -->' || { echo "FAIL: Missing <!-- fixer-summary --> marker in live issue comments"; exit 1; }
 
-# When CI green and ready to approve
 gh pr review {NUMBER} --approve --body-file /tmp/pr-review-body.md
+```
 
-# When still draft / CI not green — comment only
+When still draft or CI is not green, run:
+
+```bash
 gh pr comment {NUMBER} --body-file /tmp/pr-review-body.md
 ```
 
