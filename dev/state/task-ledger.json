@@ -40,7 +40,7 @@
       "gh pr view 32 --json number,title,state,baseRefName,headRefName,mergeStateStatus,reviewDecision,body,url -> mergeStateStatus CLEAN, state OPEN",
       "git show --stat 8ed32c3 -> Fix: gh pr review --approve gated on fragile artifact chain, PRs never get approved (#27)"
     ],
-    "last_verified": "2026-06-20T12:51:49+02:00"
+    "last_verified": "2026-06-20T12:53:39+02:00"
   },
   "ISSUE_27_PLAN": {
     "status": "done",
@@ -48,7 +48,7 @@
       "git show --stat --patch --unified=40 8ed32c3 -> moved approval decision to a live comment check before gh pr review --approve",
       "gh pr view 32 --json number,title,state,baseRefName,headRefName,mergeStateStatus,reviewDecision,body,url -> mergeStateStatus CLEAN, state OPEN"
     ],
-    "last_verified": "2026-06-20T12:51:49+02:00"
+    "last_verified": "2026-06-20T12:53:39+02:00"
   },
   "ISSUE_27_IMPLEMENTATION": {
     "status": "done",
@@ -59,13 +59,19 @@
     "last_verified": "2026-06-20T12:51:49+02:00"
   },
   "ISSUE_27_COMMIT_PUSH": {
-    "status": "in_progress",
-    "evidence": [],
+    "status": "done",
+    "evidence": [
+      "git commit -m \"chore: track issue 27 task ledger\" -> b2b80f0 chore: track issue 27 task ledger",
+      "git push -> fix/issue-27-pr-finalizer-live-comment-gate -> origin/fix/issue-27-pr-finalizer-live-comment-gate"
+    ],
     "last_verified": "2026-06-20T12:51:49+02:00"
   },
   "ISSUE_27_CI_VERIFY": {
-    "status": "pending",
-    "evidence": [],
+    "status": "blocked",
+    "evidence": [
+      "gh pr checks 32 -> no checks reported on the 'fix/issue-27-pr-finalizer-live-comment-gate' branch",
+      "gh run list --branch fix/issue-27-pr-finalizer-live-comment-gate --limit 10 --json databaseId,workflowName,status,conclusion,headSha,displayTitle,createdAt -> []"
+    ],
     "last_verified": "2026-06-20T12:51:49+02:00"
   }
 }
