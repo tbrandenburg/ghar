@@ -145,3 +145,6 @@ dev/**
 
 # Claude PRP scratch files
 .claude/PRPs/
+
+# Agent scratch files
+.agents/
