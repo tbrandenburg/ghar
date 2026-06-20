@@ -65,8 +65,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- plan-requirements -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- plan-requirements -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -80,8 +80,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- plan-architecture -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- plan-architecture -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -95,8 +95,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- plan-risks -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- plan-risks -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -110,8 +110,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- plan-research -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- plan-research -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -129,8 +129,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- spec-final -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- spec-final -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -144,8 +144,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- spec-redteam -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- spec-redteam -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -159,8 +159,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- spec-tdd-review -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- spec-tdd-review -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -174,8 +174,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- spec-approved -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- spec-approved -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -189,8 +189,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 45
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- tests-created -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- tests-created -->'
     permissions: {contents: write, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -204,8 +204,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- implementation-done -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- implementation-done -->'
     permissions: {contents: write, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -219,8 +219,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- pr-seeded -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- pr-seeded -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -439,8 +439,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 45
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- implementation-review-findings -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- implementation-review-findings -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -454,8 +454,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- maintainer-review-findings -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- maintainer-review-findings -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -469,8 +469,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 45
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- adversarial-review-findings -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- adversarial-review-findings -->'
     permissions: {contents: write, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -484,8 +484,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 45
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- residual-gap-findings -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- residual-gap-findings -->'
     permissions: {contents: read, issues: write, pull-requests: write}
     secrets: inherit
 
@@ -499,8 +499,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- e2e-evidence -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- e2e-evidence -->'
     permissions:
       actions: read
       checks: read
@@ -524,8 +524,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- fixer-summary -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- fixer-summary -->'
     permissions:
       contents: write
       issues: write
@@ -682,8 +682,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- fixer-summary -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- fixer-summary -->'
     permissions:
       actions: write
       checks: write
@@ -844,8 +844,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- fixer-summary -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- fixer-summary -->'
     permissions:
       actions: write
       checks: write
@@ -1006,8 +1006,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 60
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- fixer-summary -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- fixer-summary -->'
     permissions:
       actions: write
       checks: write
@@ -1168,8 +1168,8 @@ jobs:
       prompt: ${{ inputs.issue_number }}
       timeout-minutes: 30
       post-run-bash-command: |
-        gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} \
-          --jq '.body' | grep -q '<!-- pr-final -->'
+        gh api --paginate "repos/${{ github.repository }}/issues/${{ inputs.issue_number }}/comments" \
+          --jq '.[].body' | grep -q '<!-- pr-final -->'
     permissions:
       actions: read
       checks: read
