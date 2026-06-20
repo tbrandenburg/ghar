@@ -21,15 +21,16 @@
     "last_verified": "2026-06-20T08:44:43Z"
   },
   "ISSUE_23_COMMIT_PUSH": {
-    "status": "in_progress",
+    "status": "done",
     "evidence": [],
     "last_verified": "2026-06-20T08:44:43Z"
   },
   "ISSUE_23_CI_VERIFY": {
-    "status": "pending",
+    "status": "blocked",
     "evidence": [
-      "gh pr checks 31 -> no checks reported on the fix/issue-23-gh-pr-edit branch"
+      "gh pr checks 31 -> no checks reported on the fix/issue-23-gh-pr-edit branch",
+      "gh run list --branch fix/issue-23-gh-pr-edit --limit 5 --json databaseId,workflowName,status,conclusion,headSha,displayTitle,createdAt -> []"
     ],
-    "last_verified": "2026-06-20T08:44:43Z"
+    "last_verified": "2026-06-20T08:47:01Z"
   }
 }
