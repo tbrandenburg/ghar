@@ -142,3 +142,6 @@ vite.config.ts.timestamp-*
 .opencode/package-lock.json
 dev/
 dev/**
+
+# Claude PRP scratch files
+.claude/PRPs/
