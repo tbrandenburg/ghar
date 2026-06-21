@@ -10,7 +10,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/tbrandenburg/ghar/main/Makefile.ghar | make -f - install SOURCE_REPO=owner/repo
 
 # GHAR version (bumped on each release)
-GHAR_VERSION = 0.14.3
+GHAR_VERSION = 0.15.0
 
 # Default source repository (can be overridden)
 SOURCE_REPO ?= tbrandenburg/ghar
@@ -45,6 +45,7 @@ GHAR_FILES = \
 	.opencode/commands/ghar-residual-gap-review.md:Residual_gap_review_command \
 	.opencode/commands/ghar-e2e-evidence.md:E2E_evidence_command \
 	.opencode/commands/ghar-review-fixer.md:Review_fixer_command \
+	.opencode/commands/ghar-frontier-scoring-review.md:Frontier_scoring_review_command \
 	.opencode/commands/ghar-ci-fixer.md:CI_fixer_command \
 	.opencode/commands/ghar-pr-finalizer.md:PR_finalizer_command \
 	.opencode/commands/ghar-stale-check.md:Stale_check_command \
@@ -56,6 +57,7 @@ GHAR_FILES = \
 	.opencode/commands/ghar-commit-push.md:Commit_and_push_command \
 	.opencode/commands/ghar-review.md:Review_command \
 	.opencode/agents/review.md:Review_agent \
+	.opencode/agents/frontier-scoring.md:Frontier_scoring_agent \
 	.opencode/agents/timing-review.md:Timing_review_agent \
 	.opencode/opencode.jsonc:OpenCode_configuration
 
