@@ -12,4 +12,5 @@ The authoritative version is the `GHAR_VERSION` variable at the top of `Makefile
 
 * If there are files added or renamed the impact on `Makefile.ghar` has to be checked
 * `Makefile.ghar` has to worked in a piped mode
+* "GHAR TDD workflow" means `.github/workflows/ghar-multi-agent-tdd-issue-resolution.yml`
 * Review/scoring docs under `dev/` may be gitignored; if `glob` does not find `dev/frontier-scoring.md`, verify it with `git ls-files -oi --exclude-standard -- dev/frontier-scoring.md` or `rg --hidden --no-ignore "frontier-scoring" dev`
